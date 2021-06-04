@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Nestermaks\LaravelPricelist\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class LaravelPricelistCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-pricelist';
 
     public $description = 'My command';
 

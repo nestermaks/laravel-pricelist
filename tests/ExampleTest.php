@@ -1,6 +1,6 @@
 <?php
 
-namespace VendorName\Skeleton\Tests;
+namespace Nestermaks\LaravelPricelist\Tests;
 
 class ExampleTest extends TestCase
 {
