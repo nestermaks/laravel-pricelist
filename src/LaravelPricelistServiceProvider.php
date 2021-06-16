@@ -18,8 +18,7 @@ class LaravelPricelistServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-pricelist')
             ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_laravel-pricelist_table')
+            ->hasMigration('create_pricelist_tables')
             ->hasCommand(LaravelPricelistCommand::class);
     }
 }
