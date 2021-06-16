@@ -3,14 +3,11 @@
 namespace Nestermaks\LaravelPricelist\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Schema;
-use Orchestra\Testbench\TestCase as Orchestra;
 use Nestermaks\LaravelPricelist\LaravelPricelistServiceProvider;
-use PDO;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
-
     public function setUp(): void
     {
         parent::setUp();
@@ -33,7 +30,6 @@ class TestCase extends Orchestra
     public function getEnvironmentSetUp($app)
     {
         config()->set('database.default', 'testing');
-
     }
 
     protected function setUpDatabase()

@@ -2,18 +2,15 @@
 
 namespace Nestermaks\LaravelPricelist\Tests;
 
-
 use Nestermaks\LaravelPricelist\Models\Pricelist;
 use Nestermaks\LaravelPricelist\Models\PricelistItem;
 use Nestermaks\LaravelPricelist\Tests\Models\TestModel;
 
 class PricelistTest extends TestCase
 {
-
     /** @test */
     public function it_gets_all_tables()
     {
-
         Pricelist::create([
             'title' => 'Some title',
             'description' => 'Lorem Ipsum dolor sit amet',

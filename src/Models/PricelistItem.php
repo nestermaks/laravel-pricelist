@@ -9,7 +9,8 @@ use Nestermaks\LaravelPricelist\LaravelPricelist;
 
 class PricelistItem extends Model
 {
-    use LaravelPricelist, HasFactory;
+    use LaravelPricelist;
+    use HasFactory;
 
     protected $guarded = [];
 

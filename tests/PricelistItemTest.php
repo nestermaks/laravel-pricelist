@@ -2,17 +2,14 @@
 
 namespace Nestermaks\LaravelPricelist\Tests;
 
-
 use Nestermaks\LaravelPricelist\Models\Pricelist;
 use Nestermaks\LaravelPricelist\Models\PricelistItem;
 
 class PricelistItemTest extends TestCase
 {
-
     /** @test */
     public function it_gets_all_price_items()
     {
-
         PricelistItem::create([
             'title' => 'Some title',
             'shortcut' => 'some-title',
@@ -75,7 +72,7 @@ class PricelistItemTest extends TestCase
 
         $item->setItemOrder($pricelist, 222);
 
-        $this->assertTrue(!empty($item->pricelists()->where('pricelist_pricelist_item.item_order', 222)->first()));
+        $this->assertTrue(! empty($item->pricelists()->where('pricelist_pricelist_item.item_order', 222)->first()));
     }
 
     /** @test */
@@ -89,6 +86,6 @@ class PricelistItemTest extends TestCase
 
         $item->attach_pricelists($pricelist);
 
-        $this->assertTrue(!empty($item->pricelists()->where('pricelist_pricelist_item.item_order', 1)->first()));
+        $this->assertTrue(! empty($item->pricelists()->where('pricelist_pricelist_item.item_order', 1)->first()));
     }
 }

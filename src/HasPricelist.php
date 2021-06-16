@@ -3,9 +3,7 @@
 
 namespace Nestermaks\LaravelPricelist;
 
-
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Support\Collection;
 use Nestermaks\LaravelPricelist\Models\Pricelist;
 
 trait HasPricelist
@@ -24,6 +22,4 @@ trait HasPricelist
     {
         $this->pricelists()->detach($pricelist);
     }
-
-
 }

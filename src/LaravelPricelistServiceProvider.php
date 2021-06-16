@@ -2,9 +2,9 @@
 
 namespace Nestermaks\LaravelPricelist;
 
+use Nestermaks\LaravelPricelist\Commands\LaravelPricelistCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Nestermaks\LaravelPricelist\Commands\LaravelPricelistCommand;
 
 class LaravelPricelistServiceProvider extends PackageServiceProvider
 {

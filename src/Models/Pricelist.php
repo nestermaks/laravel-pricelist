@@ -9,7 +9,8 @@ use Nestermaks\LaravelPricelist\LaravelPricelist;
 
 class Pricelist extends Model
 {
-    use LaravelPricelist, HasFactory;
+    use LaravelPricelist;
+    use HasFactory;
     protected $guarded = [];
 
     public function pricelist_items(): BelongsToMany
