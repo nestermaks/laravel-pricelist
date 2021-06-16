@@ -6,21 +6,24 @@ namespace Nestermaks\LaravelPricelist;
 
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Collection;
+use Nestermaks\LaravelPricelist\Models\Pricelist;
 
 trait HasPricelist
 {
-    public function addPricelist(LaravelPricelist $pricelist)
+    public function pricelists(): MorphToMany
+    {
+        return $this->morphToMany(Pricelist::class, 'pricelistable');
+    }
+
+    public function addPricelist(Pricelist $pricelist): void
     {
         $this->pricelists()->attach($pricelist);
     }
 
-    public function pricelists(): MorphToMany
+    public function removePricelist(Pricelist $pricelist): void
     {
-        return $this->morphToMany(LaravelPricelist::class, 'pricelistable');
+        $this->pricelists()->detach($pricelist);
     }
 
-    public static function getActiveItems(): Collection
-    {
-        return self::where('active', true)->orderBy('order')->get();
-    }
+
 }

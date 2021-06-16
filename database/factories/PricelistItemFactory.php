@@ -12,8 +12,8 @@ class PricelistItemFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->title(),
-            'shortcut' => $this->faker->title(),
+            'title' => $this->faker->word(),
+            'shortcut' => $this->faker->word(),
             'units' => $this->faker->word(),
             'price' => $this->faker->randomNumber(3),
 //            'active' => $this->faker->boolean(),

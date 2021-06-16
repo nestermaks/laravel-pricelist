@@ -50,7 +50,7 @@ class CreatePricelistTables extends Migration
 
             $table->unsignedInteger('pricelist_id');
             $table->unsignedInteger('pricelist_item_id');
-            $table->unsignedSmallInteger('order')->default(0);
+            $table->unsignedSmallInteger('item_order')->default(0);
 
             $table
                 ->foreign('pricelist_id')
