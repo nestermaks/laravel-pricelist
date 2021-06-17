@@ -5,6 +5,8 @@ namespace Nestermaks\LaravelPricelist\Tests;
 use Nestermaks\LaravelPricelist\Models\Pricelist;
 use Nestermaks\LaravelPricelist\Models\PricelistItem;
 use Nestermaks\LaravelPricelist\Tests\Models\TestModel;
+use function PHPUnit\Framework\assertContains;
+use function PHPUnit\Framework\assertNotContains;
 
 class PricelistTest extends TestCase
 {
@@ -33,7 +35,7 @@ class PricelistTest extends TestCase
 
         $pricelist->attach_items($items);
 
-        $this->assertEquals(5, $pricelist->pricelist_items()->count());
+        $this->assertEquals(5, $pricelist->related_items()->count());
     }
 
     /** @test */
@@ -46,16 +48,34 @@ class PricelistTest extends TestCase
         $items = PricelistItem::getActiveItems();
 
         $pricelist->attach_items($items);
-        $detached_single_item = $pricelist->pricelist_items()->firstOrFail();
+        $detached_single_item = $pricelist->related_items()->firstOrFail();
 
         $pricelist->detach_items($detached_single_item);
 
-        $this->assertEquals(4, $pricelist->pricelist_items()->count());
+        $this->assertEquals(4, $pricelist->related_items()->count());
 
-        $detach_all = $pricelist->pricelist_items;
+        $detach_all = $pricelist->related_items;
         $pricelist->detach_items($detach_all);
 
-        $this->assertEquals(0, $pricelist->pricelist_items()->count());
+        $this->assertEquals(0, $pricelist->related_items()->count());
+    }
+
+    /** @test */
+    public function it_rearranges_items_after_detaching()
+    {
+        Pricelist::factory()->create();
+        PricelistItem::factory()->count(5)->create();
+
+        $pricelist = Pricelist::firstOrFail();
+        $items = PricelistItem::getActiveItems();
+
+        $pricelist->attach_items($items);
+
+        $pricelist->detach_items($items->whereIn('id', [2, 4]));
+
+        assertNotContains(2, $pricelist->related_items->pluck('id'));
+        assertNotContains(4, $pricelist->related_items->pluck('id'));
+        assertContains(3, $pricelist->related_items->pluck('id'));
     }
 
     /** @test */

@@ -14,31 +14,21 @@ class PricelistItem extends Model
 
     protected $guarded = [];
 
-    public function pricelists(): BelongsToMany
-    {
-        return $this->belongsToMany(Pricelist::class)->withPivot('item_order');
-    }
-
-    public function attach_pricelists($pricelists = []): void
-    {
-        $this->pricelists()->attach($pricelists);
-
-        $pricelists->each(function ($pricelist) {
-            $items_in_pricelist = $pricelist->pricelist_items()->count();
+    protected function setOrderAfterAttaching($items) {
+        $items->each(function ($pricelist) {
+            $items_in_pricelist = $pricelist->related_items()->count();
             $this->setItemOrder($pricelist, $items_in_pricelist);
         });
     }
 
-    public function detach_pricelists($pricelists = []): void
-    {
-        $this->pricelists()->detach($pricelists);
+    protected function setOrderAfterDetaching($items) {
+        $items->each(function ($pricelist) {
+            $pricelist->rearrangeItems();
+        });
     }
 
-    public function setItemOrder(Pricelist $pricelist, $value): void
-    {
-        $this
-            ->pricelists()
-            ->syncWithoutDetaching([$pricelist->id => ['item_order' => $value]])
-        ;
-    }
+//    public function detach_pricelists($pricelists = []): void
+//    {
+//        $this->related_items()->detach($pricelists);
+//    }
 }

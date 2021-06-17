@@ -13,18 +13,28 @@ class Pricelist extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function pricelist_items(): BelongsToMany
-    {
-        return $this->belongsToMany(PricelistItem::class)->withPivot('item_order');
+    protected function setOrderAfterAttaching($items) {
+        $items_in_pricelist = $this->related_items()->count() - $items->count() + 1;
+        $items->each(function ($item) use (&$items_in_pricelist) {
+            $this->setItemOrder($item, $items_in_pricelist);
+            $items_in_pricelist += 1;
+        });
     }
 
-    public function attach_items($items = []): void
-    {
-        $this->pricelist_items()->attach($items);
+    protected function setOrderAfterDetaching() {
+        $this->rearrangeItems();
     }
 
-    public function detach_items($items = []): void
+    public function rearrangeItems()
     {
-        $this->pricelist_items()->detach($items);
+        $index = 1;
+        $this
+            ->related_items()
+            ->orderBy('pivot_item_order')
+            ->each( function ($item) use (&$index) {
+                $this->setItemOrder($item, $index);
+                $index += 1;
+            });
     }
+
 }

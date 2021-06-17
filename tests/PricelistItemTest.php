@@ -32,9 +32,9 @@ class PricelistItemTest extends TestCase
         $pricelists = Pricelist::getActiveItems();
         $item = PricelistItem::firstOrFail();
 
-        $item->attach_pricelists($pricelists);
+        $item->attach_items($pricelists);
 
-        $this->assertEquals(5, $item->pricelists()->count());
+        $this->assertEquals(5, $item->related_items->count());
     }
 
     /** @test */
@@ -46,17 +46,17 @@ class PricelistItemTest extends TestCase
         $pricelists = Pricelist::getActiveItems();
         $item = PricelistItem::firstOrFail();
 
-        $item->attach_pricelists($pricelists);
-        $detached_single_item = $item->pricelists()->firstOrFail();
+        $item->attach_items($pricelists);
+        $detached_single_item = $item->related_items()->firstOrFail();
 
-        $item->detach_pricelists($detached_single_item);
+        $item->detach_items($detached_single_item);
 
-        $this->assertEquals(4, $item->pricelists()->count());
+        $this->assertEquals(4, $item->related_items()->count());
 
-        $detach_all = $item->pricelists;
-        $item->detach_pricelists($detach_all);
+        $detach_all = $item->related_items;
+        $item->detach_items($detach_all);
 
-        $this->assertEquals(0, $item->pricelists()->count());
+        $this->assertEquals(0, $item->related_items()->count());
     }
 
     /** @test */
@@ -72,20 +72,35 @@ class PricelistItemTest extends TestCase
 
         $item->setItemOrder($pricelist, 222);
 
-        $this->assertTrue(! empty($item->pricelists()->where('pricelist_pricelist_item.item_order', 222)->first()));
+        $this->assertTrue(! empty($item->related_items()->where('pricelist_pricelist_item.item_order', 222)->first()));
     }
 
     /** @test */
-    public function it_increments_order_number_after_attaching_to_pricelist()
+    public function it_increments_order_number_after_attaching_pricelists_and_rearranges_after_detaching()
     {
-        Pricelist::factory()->create();
-        PricelistItem::factory()->create();
+        Pricelist::factory()->count(5)->create();
+        PricelistItem::factory()->count(5)->create();
 
-        $pricelist = Pricelist::firstOrFail();
-        $item = PricelistItem::firstOrFail();
+        $all_pricelists = Pricelist::getActiveItems();
+        $all_items = Pricelist::getActiveItems();
 
-        $item->attach_pricelists($pricelist);
+        $pricelist = Pricelist::where('id', 3)->firstOrFail();
+        $item = PricelistItem::where('id', 4)->firstOrFail();
 
-        $this->assertTrue(! empty($item->pricelists()->where('pricelist_pricelist_item.item_order', 1)->first()));
+        $item->attach_items($pricelist);
+
+        $this->assertTrue(! empty($item->related_items()->where('pricelist_pricelist_item.item_order', 1)->first()));
+
+        $pricelist->attach_items($all_items);
+
+        $pricelist->detach_items($all_items->whereIn('id', [2, 4]));
+
+        $item->attach_items($all_pricelists);
+
+        $this->assertEquals(4, $pricelist->related_items()->where('pricelist_pricelist_item.item_order', 4)->first()->id);
+
+        PricelistItem::where('id', 1)->firstOrFail()->detach_items($pricelist);
+
+        $this->assertEquals(4, $pricelist->related_items()->where('pricelist_pricelist_item.item_order', 3)->first()->id);
     }
 }
