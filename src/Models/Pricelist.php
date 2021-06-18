@@ -4,7 +4,6 @@ namespace Nestermaks\LaravelPricelist\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Nestermaks\LaravelPricelist\LaravelPricelist;
 
 class Pricelist extends Model
@@ -13,13 +12,15 @@ class Pricelist extends Model
     use HasFactory;
     protected $guarded = [];
 
-    protected function setOrderAfterAttaching($items) {
+    protected function setOrderAfterAttaching($items)
+    {
         $items_in_pricelist = $this->related_items()->count() - $items->count() + 1;
         $items->each(function ($item) use (&$items_in_pricelist) {
             $this->setItemOrder($item, $items_in_pricelist);
             $items_in_pricelist += 1;
         });
     }
+
 
     protected function setOrderAfterDetaching($items = null) {
         $this->rearrangeItems();
@@ -31,10 +32,9 @@ class Pricelist extends Model
         $this
             ->related_items()
             ->orderBy('pivot_item_order')
-            ->each( function ($item) use (&$index) {
+            ->each(function ($item) use (&$index) {
                 $this->setItemOrder($item, $index);
                 $index += 1;
             });
     }
-
 }
