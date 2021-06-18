@@ -21,7 +21,7 @@ class Pricelist extends Model
         });
     }
 
-    protected function setOrderAfterDetaching() {
+    protected function setOrderAfterDetaching($items = null) {
         $this->rearrangeItems();
     }
 
