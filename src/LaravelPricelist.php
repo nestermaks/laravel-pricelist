@@ -44,7 +44,45 @@ trait LaravelPricelist
     {
         $this
             ->related_items()
-            ->syncWithoutDetaching([$related_model->id => ['item_order' => $value]])
+//            ->syncWithoutDetaching([$related_model->id => ['item_order' => $value]])
+            ->updateExistingPivot($related_model->id, ['item_order' => $value])
         ;
+    }
+
+    public function getItemOrder($related_model)
+    {
+        return $this
+            ->related_items
+            ->where('id', $related_model->id)
+            ->first()
+            ->pivot
+            ->item_order;
+    }
+
+    public function changeItemOrder($related_model, $new_order)
+    {
+        $pricelist = $related_model;
+        $item = $this;
+
+        if (self::class === Pricelist::class) {
+            $pricelist = $this;
+            $item = $related_model;
+        }
+
+        if ($pricelist->getItemOrder($item) === $new_order) {
+            return;
+        }
+
+        if ($pricelist->getItemOrder($item) > $new_order) {
+            $pricelist->moveItemsDown($new_order);
+        }
+        else {
+            $pricelist->moveItemsUp($new_order);
+        }
+
+//        dd($pricelist);
+
+        $pricelist->setItemOrder($item, $new_order);
+        $pricelist->rearrangeItems();
     }
 }

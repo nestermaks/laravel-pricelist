@@ -21,9 +21,34 @@ class Pricelist extends Model
         });
     }
 
-
     protected function setOrderAfterDetaching($items = null) {
         $this->rearrangeItems();
+    }
+
+    public function moveItemsDown(int $new_item_order)
+    {
+        $index = $new_item_order + 1;
+        $this
+            ->related_items()
+            ->orderBy('pivot_item_order')
+            ->where('pivot_item_order', '>=', $new_item_order)
+            ->each(function ($item) use (&$index) {
+                $this->setItemOrder($item, $index);
+                $index += 1;
+            });
+    }
+
+    public function moveItemsUp(int $new_item_order)
+    {
+        $index = $new_item_order - 1; // 3 - 1 = 2
+        $this
+            ->related_items()
+            ->orderByDesc('pivot_item_order') // ids: [5, 3, 2, 1, 4]
+            ->where('pivot_item_order', '<=', $new_item_order) // ids: [2, 1, 4]
+            ->each(function ($item) use (&$index) {
+                $this->setItemOrder($item, $index);
+                $index -= 1;
+            });
     }
 
     public function rearrangeItems()
