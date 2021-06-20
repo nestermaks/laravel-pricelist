@@ -13,7 +13,7 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
-        $this->loadLaravelMigrations();
+//        $this->loadLaravelMigrations();
         $this->setUpDatabase();
 
         Factory::guessFactoryNamesUsing(
