@@ -44,19 +44,18 @@ trait LaravelPricelist
     {
         $this
             ->related_items()
-//            ->syncWithoutDetaching([$related_model->id => ['item_order' => $value]])
-            ->updateExistingPivot($related_model->id, ['item_order' => $value])
-        ;
+            ->syncWithoutDetaching(
+                [$related_model->id => ['item_order' => $value]]
+            );
     }
 
     public function getItemOrder($related_model)
     {
         return $this
-            ->related_items
-            ->where('id', $related_model->id)
+            ->related_items()
+            ->wherePivot(substr($related_model->getTable(), 0, -1) . '_id', $related_model->id)
             ->first()
-            ->pivot
-            ->item_order;
+            ->pivot->item_order;
     }
 
     public function changeItemOrder($related_model, $new_order)
@@ -79,8 +78,6 @@ trait LaravelPricelist
         else {
             $pricelist->moveItemsUp($new_order);
         }
-
-//        dd($pricelist);
 
         $pricelist->setItemOrder($item, $new_order);
         $pricelist->rearrangeItems();

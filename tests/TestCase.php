@@ -2,6 +2,7 @@
 
 namespace Nestermaks\LaravelPricelist\Tests;
 
+use Astrotomic\Translatable\TranslatableServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Nestermaks\LaravelPricelist\LaravelPricelistServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -24,6 +25,7 @@ class TestCase extends Orchestra
     {
         return [
             LaravelPricelistServiceProvider::class,
+            TranslatableServiceProvider::class,
         ];
     }
 
@@ -41,5 +43,9 @@ class TestCase extends Orchestra
         include_once __DIR__ . '/../database/migrations/create_pricelist_tables.php.stub';
         (new \CreatePricelistTables())->down();
         (new \CreatePricelistTables())->up();
+
+        include_once __DIR__ . '/../database/migrations/create_pricelist_translation_tables.php.stub';
+        (new \CreatePricelistTranslationTables())->down();
+        (new \CreatePricelistTranslationTables())->up();
     }
 }

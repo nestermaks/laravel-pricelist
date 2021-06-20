@@ -12,9 +12,9 @@ class CreatePricelistTables extends Migration
         Schema::create('pricelists', function (Blueprint $table) {
             $table->id();
 
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->unsignedInteger('pricelistable_type')->nullable();
+//            $table->string('title');
+//            $table->text('description')->nullable();
+            $table->unsignedBigInteger('pricelistable_type')->nullable();
             $table->string('pricelistable_id')->nullable();
             $table->unsignedSmallInteger('order')->default(0);
             $table->boolean('active')->default(1);
@@ -25,20 +25,20 @@ class CreatePricelistTables extends Migration
         Schema::create('pricelistables', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedInteger('pricelist_id');
-            $table->unsignedInteger('pricelistable_id');
+            $table->unsignedBigInteger('pricelist_id');
+            $table->unsignedBigInteger('pricelistable_id');
             $table->string('pricelistable_type');
         });
 
         Schema::create('pricelist_items', function (Blueprint $table) {
             $table->id();
 
-            $table->text('title');
+//            $table->text('title');
             $table->string('shortcut');
             $table->unsignedBigInteger('price');
             $table->unsignedBigInteger('max_price')->nullable();
             $table->boolean('price_from')->default(0);
-            $table->string('units');
+//            $table->string('units');
             $table->boolean('active')->default(1);
 
             $table->timestamps();
@@ -48,8 +48,8 @@ class CreatePricelistTables extends Migration
         Schema::create('pricelist_pricelist_item', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedInteger('pricelist_id');
-            $table->unsignedInteger('pricelist_item_id');
+            $table->unsignedBigInteger('pricelist_id');
+            $table->unsignedBigInteger('pricelist_item_id');
             $table->unsignedSmallInteger('item_order')->default(0);
 
             $table

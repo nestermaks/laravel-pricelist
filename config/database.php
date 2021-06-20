@@ -2,8 +2,6 @@
 // config for Nestermaks/ClassName
 return [
 
-//    'default' => 'testing',
-
     'connections' => [
 
         'testing' => [

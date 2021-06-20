@@ -2,15 +2,19 @@
 
 namespace Nestermaks\LaravelPricelist\Models;
 
+use Astrotomic\Translatable\Translatable;
+use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Nestermaks\LaravelPricelist\Database\Factories\PricelistFactory;
 use Nestermaks\LaravelPricelist\LaravelPricelist;
 
-class Pricelist extends Model
+class Pricelist extends Model implements TranslatableContract
 {
-    use LaravelPricelist;
-    use HasFactory;
+    use LaravelPricelist, HasFactory, Translatable;
+
     protected $guarded = [];
+    public $translatedAttributes = ['title', 'description'];
 
     protected function setOrderAfterAttaching($items)
     {
@@ -28,27 +32,27 @@ class Pricelist extends Model
 
     public function moveItemsDown(int $new_item_order)
     {
-        $index = $new_item_order + 1;
+        $index = $this->related_items()->count() + 1;
         $this
             ->related_items()
-            ->orderBy('pivot_item_order')
-            ->where('pivot_item_order', '>=', $new_item_order)
+            ->orderBy('pivot_item_order', 'desc')
+            ->wherePivot('item_order', '>=', $new_item_order)
             ->each(function ($item) use (&$index) {
                 $this->setItemOrder($item, $index);
-                $index += 1;
+                $index -= 1;
             });
     }
 
     public function moveItemsUp(int $new_item_order)
     {
-        $index = $new_item_order - 1; // 3 - 1 = 2
+        $index = 0;
         $this
             ->related_items()
-            ->orderByDesc('pivot_item_order') // ids: [5, 3, 2, 1, 4]
-            ->where('pivot_item_order', '<=', $new_item_order) // ids: [2, 1, 4]
+            ->orderBy('pivot_item_order')
+            ->wherePivot('item_order', '<=', $new_item_order)
             ->each(function ($item) use (&$index) {
                 $this->setItemOrder($item, $index);
-                $index -= 1;
+                $index += 1;
             });
     }
 
@@ -62,5 +66,10 @@ class Pricelist extends Model
                 $this->setItemOrder($item, $index);
                 $index += 1;
             });
+    }
+
+    protected static function newFactory(): PricelistFactory
+    {
+        return PricelistFactory::new();
     }
 }

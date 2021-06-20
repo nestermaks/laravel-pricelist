@@ -12,10 +12,10 @@ class PricelistFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->word(),
-            'description' => $this->faker->paragraph(),
+//            'title' => $this->faker->word(),
+//            'description' => $this->faker->paragraph(),
             'active' => true,
-            'order' => $this->faker->randomNumber(2, 10)
+            'order' => $this->faker->numberBetween(1, 50)
         ];
     }
 }

@@ -11,10 +11,10 @@ class PricelistItemTest extends TestCase
     public function it_gets_all_price_items()
     {
         PricelistItem::create([
-            'title' => 'Some title',
+//            'title' => 'Some title',
             'shortcut' => 'some-title',
             'price' => 8,
-            'units' => 'kg',
+//            'units' => 'kg',
             'active' => true,
         ]);
 
