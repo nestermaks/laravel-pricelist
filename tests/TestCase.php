@@ -36,6 +36,7 @@ class TestCase extends Orchestra
 
     protected function setUpDatabase()
     {
+        include_once __DIR__ . '/../tests/models/TestModel.php';
         include_once __DIR__ . '/../tests/database/migrations/create_test_model_tables.php.stub';
         (new \CreateTestModels())->down();
         (new \CreateTestModels())->up();
