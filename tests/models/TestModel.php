@@ -9,8 +9,8 @@ use Nestermaks\LaravelPricelist\Tests\Database\Factories\TestModelFactory;
 
 class TestModel extends Model
 {
-    use HasPricelist;
-    use HasFactory;
+    use HasPricelist, HasFactory;
+
     protected $guarded = [];
 
     protected static function newFactory(): TestModelFactory
