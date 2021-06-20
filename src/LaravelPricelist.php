@@ -75,8 +75,7 @@ trait LaravelPricelist
 
         if ($pricelist->getItemOrder($item) > $new_order) {
             $pricelist->moveItemsDown($new_order);
-        }
-        else {
+        } else {
             $pricelist->moveItemsUp($new_order);
         }
 
