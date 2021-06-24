@@ -1,21 +1,23 @@
 <?php
 
+
 namespace Nestermaks\LaravelPricelist\Database\Factories;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Nestermaks\LaravelPricelist\Models\PricelistItem;
+use Nestermaks\LaravelPricelist\Models\PricelistTranslation;
 
-class PricelistItemFactory extends Factory
+
+class PricelistTranslationFactory extends Factory
 {
-    protected $model = PricelistItem::class;
+    protected $model = PricelistTranslation::class;
 
     public function definition()
     {
         return [
-            'shortcut' => $this->faker->word(),
-            'price' => $this->faker->numberBetween(10, 900),
-            'active' => 1,
+            'title' => $this->faker->word(),
+            'locale' => 'en',
+            'description' => $this->faker->paragraph(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

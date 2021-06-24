@@ -12,8 +12,6 @@ class CreatePricelistTables extends Migration
         Schema::create('pricelists', function (Blueprint $table) {
             $table->id();
 
-//            $table->string('title');
-//            $table->text('description')->nullable();
             $table->unsignedBigInteger('pricelistable_type')->nullable();
             $table->string('pricelistable_id')->nullable();
             $table->unsignedSmallInteger('order')->default(0);

@@ -18,10 +18,18 @@ class LaravelPricelistServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-pricelist')
             ->hasConfigFile('pricelist')
+            ->hasRoute('api')
             ->hasMigrations([
                 'create_pricelist_tables',
                 'create_pricelist_translation_tables'
             ])
             ->hasCommand(LaravelPricelistCommand::class);
+    }
+
+    public function packageRegistered()
+    {
+        parent::packageRegistered();
+
+        config()->set('translatable.locales', config('pricelist.locales'));
     }
 }
