@@ -21,6 +21,15 @@ class PricelistItemController
         );
     }
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @property string $shortcut
+     * @property int $price
+     * @property int $max_price
+     * @property boolean $price_from
+     * @property boolean $active
+     */
     public function store(Request $request): JsonResponse
     {
         try {
@@ -57,6 +66,15 @@ class PricelistItemController
         );
     }
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @property string $shortcut
+     * @property int $price
+     * @property int $max_price
+     * @property boolean $price_from
+     * @property boolean $active
+     */
     public function update(Request $request, int $id): JsonResponse
     {
         try {
