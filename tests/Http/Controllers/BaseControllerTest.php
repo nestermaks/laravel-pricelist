@@ -7,7 +7,6 @@ use Nestermaks\LaravelPricelist\Models\PricelistItem;
 use Nestermaks\LaravelPricelist\Models\PricelistItemTranslation;
 use Nestermaks\LaravelPricelist\Models\PricelistTranslation;
 use Nestermaks\LaravelPricelist\Tests\Extra\TestModel;
-use function PHPUnit\Framework\assertJson;
 
 class BaseControllerTest extends TestCase
 {
@@ -24,7 +23,8 @@ class BaseControllerTest extends TestCase
             ->has(
                 PricelistItem::factory()
                     ->has(PricelistItemTranslation::factory(), 'translations')
-                    ->count(5), 'related_items'
+                    ->count(5),
+                'related_items'
             )
             ->count(9)
             ->create();
@@ -49,7 +49,7 @@ class BaseControllerTest extends TestCase
             [
                 'pricelist_id' => 3,
                 'pricelist_item_id' => 12,
-                'item_order' => 5
+                'item_order' => 5,
             ]
         );
 
@@ -91,7 +91,6 @@ class BaseControllerTest extends TestCase
         $this->assertNotContains(2, Pricelist::where('id', 4)->first()->related_items->pluck('id'));
     }
 
-
     /** @test */
     public function it_attaches_items_to_pricelist_through_api()
     {
@@ -109,8 +108,6 @@ class BaseControllerTest extends TestCase
         $this->assertContains(26, Pricelist::where('id', 3)->first()->related_items->pluck('id'));
         $this->assertContains(29, Pricelist::where('id', 3)->first()->related_items->pluck('id'));
     }
-
-
 
     /** @test */
     public function it_detaches_pricelists_from_the_item_through_api()
@@ -176,7 +173,7 @@ class BaseControllerTest extends TestCase
     public function it_attaches_and_detaches_pricelist_to_model()
     {
         TestModel::create([
-            'title' => 'Hello'
+            'title' => 'Hello',
         ]);
 
         $response = $this->post(
@@ -204,14 +201,13 @@ class BaseControllerTest extends TestCase
         $response->assertStatus(200);
 
         $this->assertNotContains(1, TestModel::first()->pricelists->pluck('id'));
-
     }
 
     /** @test */
     public function it_gets_all_pricelists_of_a_model()
     {
         $test_model = TestModel::create([
-            'title' => 'Hello'
+            'title' => 'Hello',
         ]);
 
         $pricelist_1 = Pricelist::where('id', 1)->first();
@@ -231,5 +227,4 @@ class BaseControllerTest extends TestCase
             . '/1' // $model_id
         )->assertJsonCount(2, 'data');
     }
-
 }

@@ -2,8 +2,8 @@
 
 namespace Nestermaks\LaravelPricelist\Models;
 
-use Astrotomic\Translatable\Translatable;
 use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
+use Astrotomic\Translatable\Translatable;
 //use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +12,9 @@ use Nestermaks\LaravelPricelist\LaravelPricelist;
 
 class Pricelist extends Model implements TranslatableContract
 {
-    use LaravelPricelist, HasFactory, Translatable;
+    use LaravelPricelist;
+    use HasFactory;
+    use Translatable;
 
     protected $guarded = [];
     public $translatedAttributes = ['title', 'description'];
@@ -68,5 +70,4 @@ class Pricelist extends Model implements TranslatableContract
                 $index += 1;
             });
     }
-
 }

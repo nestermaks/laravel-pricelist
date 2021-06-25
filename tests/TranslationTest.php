@@ -2,7 +2,6 @@
 
 namespace Nestermaks\LaravelPricelist\Tests;
 
-use Illuminate\Support\Facades\App;
 use Nestermaks\LaravelPricelist\Models\Pricelist;
 use Nestermaks\LaravelPricelist\Models\PricelistItem;
 
@@ -11,7 +10,7 @@ class TranslationTest extends TestCase
     /** @test */
     public function it_gets_locales_from_pricelist_config()
     {
-        $this->assertEquals(config('pricelist.locales'), config('translatable.locales') );
+        $this->assertEquals(config('pricelist.locales'), config('translatable.locales'));
     }
 
     /** @test */

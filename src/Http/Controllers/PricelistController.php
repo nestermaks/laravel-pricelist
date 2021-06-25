@@ -3,17 +3,14 @@
 
 namespace Nestermaks\LaravelPricelist\Http\Controllers;
 
-
-
-use Nestermaks\LaravelPricelist\Http\Resources\PricelistResource;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse as JsonResponse;
-use Nestermaks\LaravelPricelist\Models\Pricelist;
+use Illuminate\Http\Request;
 use Nestermaks\LaravelPricelist\Http\Resources\PricelistCollection;
+use Nestermaks\LaravelPricelist\Http\Resources\PricelistResource;
+use Nestermaks\LaravelPricelist\Models\Pricelist;
 
 class PricelistController
 {
-
     public function index(): PricelistCollection
     {
         return new PricelistCollection(
@@ -36,21 +33,19 @@ class PricelistController
 
             $pricelist->save();
         } catch (\Exception $e) {
-
             if (config('app.debug')) {
                 return response()->json($e);
             }
 
             return response()->json(['error' => 'Something went wrong']);
         }
+
         return \response()->json(['success' => 'success'], 201);
-
-
     }
 
     public function show($id)
     {
-        return new PricelistResource (
+        return new PricelistResource(
             Pricelist::where('id', $id)
                 ->withTranslation()
                 ->with('related_items')
@@ -71,15 +66,14 @@ class PricelistController
 
             $pricelist->save();
         } catch (\Exception $e) {
-
             if (config('app.debug')) {
                 return response()->json($e);
             }
 
             return response()->json(['error' => 'Something went wrong']);
         }
-        return \response()->json(['success' => 'success'], 200);
 
+        return \response()->json(['success' => 'success'], 200);
     }
 
     public function destroy(int $id): JsonResponse
@@ -88,14 +82,13 @@ class PricelistController
             $pricelist = Pricelist::where('id', $id)->firstOrFail();
             $pricelist->delete();
         } catch (\Exception $e) {
-
             if (config('app.debug')) {
                 return response()->json($e);
             }
 
             return response()->json(['error' => 'Something went wrong']);
         }
-        return \response()->json(['success' => 'success'], 200);
 
+        return \response()->json(['success' => 'success'], 200);
     }
 }

@@ -6,8 +6,6 @@ use Nestermaks\LaravelPricelist\Models\Pricelist;
 use Nestermaks\LaravelPricelist\Models\PricelistItem;
 use Nestermaks\LaravelPricelist\Models\PricelistItemTranslation;
 use Nestermaks\LaravelPricelist\Models\PricelistTranslation;
-use Nestermaks\LaravelPricelist\Tests\Extra\TestModel;
-use function PHPUnit\Framework\assertJson;
 
 class PricelistItemControllerTest extends TestCase
 {
@@ -24,7 +22,8 @@ class PricelistItemControllerTest extends TestCase
             ->has(
                 PricelistItem::factory()
                     ->has(PricelistItemTranslation::factory(), 'translations')
-                    ->count(5), 'related_items'
+                    ->count(5),
+                'related_items'
             )
             ->count(9)
             ->create();
@@ -54,8 +53,7 @@ class PricelistItemControllerTest extends TestCase
 
         if (config('pricelist.pricelist-items-per-page') <= $this->items->count()) {
             $response->assertJsonCount(config('pricelist.pricelist-items-per-page'), 'data');
-        }
-        else {
+        } else {
             $response->assertJsonCount($this->items->count(), 'data');
         }
     }
@@ -82,7 +80,7 @@ class PricelistItemControllerTest extends TestCase
         $this
             ->get(config('pricelist.api') . '/' . config('pricelist.items') . '/' . $hello_pricelist_item->id)
             ->assertOk()->assertJson([
-                'data' => ['title' => 'Hello world']
+                'data' => ['title' => 'Hello world'],
             ]);
     }
 
@@ -109,7 +107,6 @@ class PricelistItemControllerTest extends TestCase
 
         $this->assertEquals('Hello world', $hello_pricelist_item->title);
         $this->assertEquals(0, $hello_pricelist_item->price_from);
-
     }
 
     /** @test */
@@ -134,7 +131,6 @@ class PricelistItemControllerTest extends TestCase
         $hello_pricelist_item = PricelistItem::where('id', 2)->first();
 
         $this->assertEquals('Hello world', $hello_pricelist_item->title);
-
     }
 
     /** @test */

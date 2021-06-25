@@ -3,12 +3,11 @@
 
 namespace Nestermaks\LaravelPricelist\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse as JsonResponse;
-use Nestermaks\LaravelPricelist\Models\Pricelist;
+use Illuminate\Http\Request;
 use Nestermaks\LaravelPricelist\Http\Resources\PricelistCollection;
+use Nestermaks\LaravelPricelist\Models\Pricelist;
 use Nestermaks\LaravelPricelist\Models\PricelistItem;
-
 
 class BaseController
 {
@@ -25,10 +24,9 @@ class BaseController
         } catch (\Exception $e) {
             return \response()->json(['error' => 'error'], 500);
         }
+
         return \response()->json(['success' => 'success'], 200);
-
     }
-
 
     //Attach or detach pricelist items from a pricelist or pricelists from an item
 
@@ -39,21 +37,18 @@ class BaseController
             if (gettype($request->pricelist_id) === 'array') {
                 $model = PricelistItem::where('id', $request->pricelist_item_id)->firstOrFail();
                 $related_items = Pricelist::whereIn('id', $request->pricelist_id)->get();
-            }
-            else {
+            } else {
                 $model = Pricelist::where('id', $request->pricelist_id)->firstOrFail();
                 $related_items = PricelistItem::whereIn('id', $request->pricelist_item_id)->get();
             }
 
             $model->$action($related_items);
-
         } catch (\Exception $e) {
             return \response()->json(['error' => 'error'], 500);
         }
 
         return \response()->json(['success' => 'success'], 200);
     }
-
 
     //Get related pricelist for your model
 
@@ -69,7 +64,6 @@ class BaseController
                 ->paginate(config('pricelist.pricelists-per-page'))
         );
     }
-
 
     //Attach and detach pricelist for your model
 
@@ -87,7 +81,6 @@ class BaseController
 
         return \response()->json(['success' => 'success'], 200);
     }
-
 
     protected function getModelInstance($model_name, $model_id)
     {

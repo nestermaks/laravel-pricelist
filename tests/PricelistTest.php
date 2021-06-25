@@ -82,7 +82,7 @@ class PricelistTest extends TestCase
 //        $test_model = TestModel::factory()->create();
 
         $test_model = TestModel::create([
-            'title' => 'Hello'
+            'title' => 'Hello',
         ]);
 
         Pricelist::factory()->create();
@@ -100,7 +100,7 @@ class PricelistTest extends TestCase
     public function it_can_be_detached_from_another_model()
     {
         $test_model = TestModel::create([
-            'title' => 'Hello'
+            'title' => 'Hello',
         ]);
 
         Pricelist::factory()->create();

@@ -21,7 +21,7 @@ class LaravelPricelistServiceProvider extends PackageServiceProvider
             ->hasRoute('api')
             ->hasMigrations([
                 'create_pricelist_tables',
-                'create_pricelist_translation_tables'
+                'create_pricelist_translation_tables',
             ])
             ->hasCommand(LaravelPricelistCommand::class);
     }

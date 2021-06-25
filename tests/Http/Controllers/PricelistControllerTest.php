@@ -6,8 +6,6 @@ use Nestermaks\LaravelPricelist\Models\Pricelist;
 use Nestermaks\LaravelPricelist\Models\PricelistItem;
 use Nestermaks\LaravelPricelist\Models\PricelistItemTranslation;
 use Nestermaks\LaravelPricelist\Models\PricelistTranslation;
-use Nestermaks\LaravelPricelist\Tests\Extra\TestModel;
-use function PHPUnit\Framework\assertJson;
 
 class PricelistControllerTest extends TestCase
 {
@@ -24,7 +22,8 @@ class PricelistControllerTest extends TestCase
             ->has(
                 PricelistItem::factory()
                     ->has(PricelistItemTranslation::factory(), 'translations')
-                    ->count(5), 'related_items'
+                    ->count(5),
+                'related_items'
             )
             ->count(9)
             ->create();
@@ -54,8 +53,7 @@ class PricelistControllerTest extends TestCase
 
         if (config('pricelist.pricelists-per-page') <= $this->pricelists->count()) {
             $response->assertJsonCount(config('pricelist.pricelists-per-page'), 'data');
-        }
-        else {
+        } else {
             $response->assertJsonCount($this->pricelists->count(), 'data');
         }
     }
@@ -70,7 +68,7 @@ class PricelistControllerTest extends TestCase
                 'description' => 'Description works',
                 'lang' => 'en',
                 'active' => 1,
-                'order' => 23
+                'order' => 23,
             ]
         );
 
@@ -91,7 +89,7 @@ class PricelistControllerTest extends TestCase
                 'description' => 'Description works',
                 'lang' => 'en',
                 'active' => 1,
-                'order' => 23
+                'order' => 23,
             ]
         );
 
@@ -100,7 +98,7 @@ class PricelistControllerTest extends TestCase
         $this
             ->get(config('pricelist.api') . '/' . config('pricelist.pricelists') . '/' . $hello_pricelist->id)
             ->assertOk()->assertJson([
-                'data' => ['title' => 'Hello world']
+                'data' => ['title' => 'Hello world'],
             ]);
     }
 
@@ -114,7 +112,7 @@ class PricelistControllerTest extends TestCase
                 'description' => 'Description works',
                 'lang' => 'en',
                 'active' => 1,
-                'order' => 23
+                'order' => 23,
             ]
         );
 
@@ -123,7 +121,6 @@ class PricelistControllerTest extends TestCase
         $hello_pricelist = Pricelist::where('id', 2)->first();
 
         $this->assertEquals('Hello world', $hello_pricelist->title);
-
     }
 
     /** @test */
@@ -135,5 +132,4 @@ class PricelistControllerTest extends TestCase
 
         $this->assertEmpty(Pricelist::where('id', 2)->first());
     }
-
 }
