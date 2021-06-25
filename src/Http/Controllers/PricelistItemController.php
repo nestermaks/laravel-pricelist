@@ -24,6 +24,7 @@ class PricelistItemController
     /**
      * The attributes that should be cast to native types.
      *
+     * @psalm-seal-properties
      * @property string $shortcut
      * @property int $price
      * @property int $max_price
@@ -69,6 +70,7 @@ class PricelistItemController
     /**
      * The attributes that should be cast to native types.
      *
+     * @psalm-seal-properties
      * @property string $shortcut
      * @property int $price
      * @property int $max_price
