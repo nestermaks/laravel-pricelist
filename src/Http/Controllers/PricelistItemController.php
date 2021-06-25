@@ -28,8 +28,8 @@ class PricelistItemController
      * @property string $shortcut
      * @property int $price
      * @property int $max_price
-     * @property boolean $price_from
-     * @property boolean $active
+     * @property bool $price_from
+     * @property bool $active
      */
     public function store(Request $request): JsonResponse
     {
@@ -74,8 +74,8 @@ class PricelistItemController
      * @property string $shortcut
      * @property int $price
      * @property int $max_price
-     * @property boolean $price_from
-     * @property boolean $active
+     * @property bool $price_from
+     * @property bool $active
      */
     public function update(Request $request, int $id): JsonResponse
     {
