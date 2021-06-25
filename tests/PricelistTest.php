@@ -4,7 +4,7 @@ namespace Nestermaks\LaravelPricelist\Tests;
 
 use Nestermaks\LaravelPricelist\Models\Pricelist;
 use Nestermaks\LaravelPricelist\Models\PricelistItem;
-use Nestermaks\LaravelPricelist\Tests\Models\TestModel;
+use Nestermaks\LaravelPricelist\Tests\Extra\TestModel;
 use function PHPUnit\Framework\assertContains;
 use function PHPUnit\Framework\assertNotContains;
 
@@ -14,8 +14,6 @@ class PricelistTest extends TestCase
     public function it_gets_all_tables()
     {
         Pricelist::create([
-//            'title' => 'Some title',
-//            'description' => 'Lorem Ipsum dolor sit amet',
             'active' => true,
         ]);
 
@@ -101,8 +99,6 @@ class PricelistTest extends TestCase
     /** @test */
     public function it_can_be_detached_from_another_model()
     {
-//        $test_model = TestModel::factory()->create();
-
         $test_model = TestModel::create([
             'title' => 'Hello'
         ]);

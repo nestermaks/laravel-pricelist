@@ -6,6 +6,7 @@ use Nestermaks\LaravelPricelist\Models\Pricelist;
 use Nestermaks\LaravelPricelist\Models\PricelistItem;
 use Nestermaks\LaravelPricelist\Models\PricelistItemTranslation;
 use Nestermaks\LaravelPricelist\Models\PricelistTranslation;
+use Nestermaks\LaravelPricelist\Tests\Extra\TestModel;
 use function PHPUnit\Framework\assertJson;
 
 class PricelistControllerTest extends TestCase
@@ -78,7 +79,29 @@ class PricelistControllerTest extends TestCase
         $hello_pricelist = Pricelist::whereTranslation('title', 'Hello world')->first();
 
         $this->assertEquals('Hello world', $hello_pricelist->title);
+    }
 
+    /** @test */
+    public function it_shows_a_pricelist()
+    {
+        $this->post(
+            config('pricelist.api') . '/' . config('pricelist.pricelists'),
+            [
+                'title' => 'Hello world',
+                'description' => 'Description works',
+                'lang' => 'en',
+                'active' => 1,
+                'order' => 23
+            ]
+        );
+
+        $hello_pricelist = Pricelist::whereTranslation('title', 'Hello world')->first();
+
+        $this
+            ->get(config('pricelist.api') . '/' . config('pricelist.pricelists') . '/' . $hello_pricelist->id)
+            ->assertOk()->assertJson([
+                'data' => ['title' => 'Hello world']
+            ]);
     }
 
     /** @test */
@@ -104,26 +127,6 @@ class PricelistControllerTest extends TestCase
     }
 
     /** @test */
-    public function it_changes_order_of_item_through_api()
-    {
-        $response = $this->post(
-            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/change-order',
-            [
-                'pricelist_id' => 3,
-                'pricelist_item_id' => 12,
-                'item_order' => 5
-            ]
-        );
-
-
-        $response->assertStatus(200);
-
-        $order = Pricelist::where('id', 3)->first()->getItemOrder(PricelistItem::where('id', 12)->first());
-
-        $this->assertEquals(5, $order);
-    }
-
-    /** @test */
     public function it_deletes_pricelist()
     {
         $response = $this->delete(config('pricelist.api') . '/' . config('pricelist.pricelists') . '/2');
@@ -133,81 +136,4 @@ class PricelistControllerTest extends TestCase
         $this->assertEmpty(Pricelist::where('id', 2)->first());
     }
 
-    /** @test */
-    public function it_attaches_items_to_pricelist_through_api()
-    {
-        $response = $this->post(
-            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/attach_items',
-            [
-                'pricelist_id' => 3,
-                'pricelist_item_id' => [26, 29],
-                'action' => 'attach_items',
-            ]
-        );
-
-        $response->assertStatus(200);
-
-        $this->assertContains(26, Pricelist::where('id', 3)->first()->related_items->pluck('id'));
-        $this->assertContains(29, Pricelist::where('id', 3)->first()->related_items->pluck('id'));
-    }
-
-    /** @test */
-    public function it_attaches_pricelists_to_item_through_api()
-    {
-        $response = $this->post(
-            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/attach_items',
-            [
-                'pricelist_id' => [3, 4],
-                'pricelist_item_id' => 2,
-            ]
-        );
-
-        $response->assertStatus(200);
-
-        $this->assertContains(2, Pricelist::where('id', 3)->first()->related_items->pluck('id'));
-        $this->assertContains(2, Pricelist::where('id', 4)->first()->related_items->pluck('id'));
-
-        $response = $this->post(
-            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/detach_items',
-            [
-                'pricelist_id' => [3, 4],
-                'pricelist_item_id' => 2,
-            ]
-        );
-
-        $response->assertStatus(200);
-
-        $this->assertNotContains(2, Pricelist::where('id', 3)->first()->related_items->pluck('id'));
-        $this->assertNotContains(2, Pricelist::where('id', 4)->first()->related_items->pluck('id'));
-    }
-
-    /** @test */
-    public function it_detaches_pricelists_from_item_through_api()
-    {
-        $response = $this->post(
-            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/attach_items',
-            [
-                'pricelist_id' => [3, 4],
-                'pricelist_item_id' => 2,
-            ]
-        );
-
-        $response->assertStatus(200);
-
-        $this->assertContains(2, Pricelist::where('id', 3)->first()->related_items->pluck('id'));
-        $this->assertContains(2, Pricelist::where('id', 4)->first()->related_items->pluck('id'));
-
-        $response = $this->post(
-            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/detach_items',
-            [
-                'pricelist_id' => [3, 4],
-                'pricelist_item_id' => 2,
-            ]
-        );
-
-        $response->assertStatus(200);
-
-        $this->assertNotContains(2, Pricelist::where('id', 3)->first()->related_items->pluck('id'));
-        $this->assertNotContains(2, Pricelist::where('id', 4)->first()->related_items->pluck('id'));
-    }
 }

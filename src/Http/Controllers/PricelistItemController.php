@@ -8,33 +8,36 @@ namespace Nestermaks\LaravelPricelist\Http\Controllers;
 use Nestermaks\LaravelPricelist\Http\Resources\PricelistResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse as JsonResponse;
-use Nestermaks\LaravelPricelist\Models\Pricelist;
+use Nestermaks\LaravelPricelist\Models\PricelistItem;
 use Nestermaks\LaravelPricelist\Http\Resources\PricelistCollection;
 
-class PricelistController
+class PricelistItemController
 {
 
     public function index(): PricelistCollection
     {
         return new PricelistCollection(
-            Pricelist::withTranslation()
+            PricelistItem::withTranslation()
                 ->with('related_items')
                 ->with('related_items.translations')
-                ->paginate(config('pricelist.pricelists-per-page'))
+                ->paginate(config('pricelist.pricelist-items-per-page'))
         );
     }
 
     public function store(Request $request): JsonResponse
     {
         try {
-            $pricelist = new Pricelist();
+            $item = new PricelistItem();
 
-            $pricelist->translateOrNew($request->lang)->title = $request->title;
-            $pricelist->translateOrNew($request->lang)->description = $request->description;
-            $pricelist->order = $request->order;
-            $pricelist->active = $request->active;
+            $item->translateOrNew($request->lang)->title = $request->title;
+            $item->translateOrNew($request->lang)->units = $request->units;
+            $item->shortcut = $request->shortcut;
+            $item->price = $request->price;
+            $item->max_price = $request->max_price;
+            $item->price_from = $request->price_from;
+            $item->active = $request->active;
 
-            $pricelist->save();
+            $item->save();
         } catch (\Exception $e) {
 
             if (config('app.debug')) {
@@ -51,7 +54,7 @@ class PricelistController
     public function show($id)
     {
         return new PricelistResource (
-            Pricelist::where('id', $id)
+            PricelistItem::where('id', $id)
                 ->withTranslation()
                 ->with('related_items')
                 ->with('related_items.translations')
@@ -59,23 +62,25 @@ class PricelistController
         );
     }
 
-    public function update(Request $request, int $id)
+    public function update(Request $request, int $id): JsonResponse
     {
         try {
-            $pricelist = Pricelist::where('id', $id)->firstOrFail();
+            $item = PricelistItem::where('id', $id)->firstOrFail();
 
-            $pricelist->translateOrNew($request->lang)->title = $request->title;
-            $pricelist->translateOrNew($request->lang)->description = $request->description;
-            $pricelist->order = $request->order;
-            $pricelist->active = $request->active;
+            $item->translateOrNew($request->lang)->title = $request->title;
+            $item->translateOrNew($request->lang)->units = $request->units;
+            $item->shortcut = $request->shortcut;
+            $item->price = $request->price;
+            $item->max_price = $request->max_price;
+            $item->price_from = $request->price_from;
+            $item->active = $request->active;
 
-            $pricelist->save();
+            $item->save();
         } catch (\Exception $e) {
 
             if (config('app.debug')) {
                 return response()->json($e);
             }
-
             return response()->json(['error' => 'Something went wrong']);
         }
         return \response()->json(['success' => 'success'], 200);
@@ -85,8 +90,8 @@ class PricelistController
     public function destroy(int $id): JsonResponse
     {
         try {
-            $pricelist = Pricelist::where('id', $id)->firstOrFail();
-            $pricelist->delete();
+            $item = PricelistItem::where('id', $id)->firstOrFail();
+            $item->delete();
         } catch (\Exception $e) {
 
             if (config('app.debug')) {

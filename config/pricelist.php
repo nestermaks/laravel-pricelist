@@ -14,8 +14,8 @@ return [
     'pricelists' => 'pricelists',
 
     //Pricelist items routes prefix
-    'item' => 'pricelist-item',
+    'items' => 'pricelist-items',
 
     'pricelists-per-page' => 5,
-    'pricelist-items-per-page' => 5,
+    'pricelist-items-per-page' => 10,
 ];

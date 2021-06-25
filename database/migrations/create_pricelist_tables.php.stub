@@ -31,12 +31,10 @@ class CreatePricelistTables extends Migration
         Schema::create('pricelist_items', function (Blueprint $table) {
             $table->id();
 
-//            $table->text('title');
             $table->string('shortcut');
             $table->unsignedBigInteger('price');
             $table->unsignedBigInteger('max_price')->nullable();
             $table->boolean('price_from')->default(0);
-//            $table->string('units');
             $table->boolean('active')->default(1);
 
             $table->timestamps();

@@ -3,14 +3,8 @@
 
 namespace Nestermaks\LaravelPricelist\Http\Controllers;
 
-
-
-//use App\Http\Resources\PricelistResource;
-use Nestermaks\LaravelPricelist\Http\Resources\PricelistResource;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse as JsonResponse;
-use League\Flysystem\Exception;
 use Nestermaks\LaravelPricelist\Models\Pricelist;
 use Nestermaks\LaravelPricelist\Http\Resources\PricelistCollection;
 use Nestermaks\LaravelPricelist\Models\PricelistItem;
@@ -19,7 +13,7 @@ use Nestermaks\LaravelPricelist\Models\PricelistItem;
 class BaseController
 {
 
-    //Changes order of price list items within a pricelist
+    //Changes order of pricelist items within a pricelist
 
     public function changeOrder(Request $request): JsonResponse
     {
@@ -35,7 +29,8 @@ class BaseController
 
     }
 
-    //Attach or detach items from a pricelist or pricelists from an item
+
+    //Attach or detach pricelist items from a pricelist or pricelists from an item
 
     public function relation(Request $request): JsonResponse
     {
@@ -57,5 +52,45 @@ class BaseController
         }
 
         return \response()->json(['success' => 'success'], 200);
+    }
+
+
+    //Get related pricelist for your model
+
+    public function getPricelistsOfModel($model_name, $model_id): PricelistCollection
+    {
+        $model = $this->getModelInstance($model_name, $model_id);
+
+        return new PricelistCollection(
+            $model->pricelists()
+                ->withTranslation()
+                ->with('related_items')
+                ->with('related_items.translations')
+                ->paginate(config('pricelist.pricelists-per-page'))
+        );
+    }
+
+
+    //Attach and detach pricelist for your model
+
+    public function relationWithModel(Request $request): JsonResponse
+    {
+        try {
+            $model = $this->getModelInstance($request->model_name, $request->model_id);
+            $action = $request->action;
+            $pricelist = Pricelist::where('id', $request->pricelist_id)->first();
+
+            $model->$action($pricelist);
+        } catch (\Exception $e) {
+            return \response()->json(['error' => 'error'], 500);
+        }
+
+        return \response()->json(['success' => 'success'], 200);
+    }
+
+
+    protected function getModelInstance($model_name, $model_id)
+    {
+        return $model = $model_name::where('id', $model_id)->first();
     }
 }
