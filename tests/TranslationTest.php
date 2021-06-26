@@ -25,7 +25,6 @@ class TranslationTest extends TestCase
         $pricelist->save();
 
         $this->assertEquals('Hello World', Pricelist::first()->translate('ru')->title);
-//        dd(config('translatable.locales'));
     }
 
     /** @test */
