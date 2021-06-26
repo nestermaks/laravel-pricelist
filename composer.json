@@ -44,6 +44,7 @@
         "psalm": "vendor/bin/psalm",
         "test": "./vendor/bin/testbench package:test --parallel --no-coverage",
         "test-seq": "./vendor/bin/testbench package:test --no-coverage",
+        "test-par": "./vendor/bin/paratest --no-coverage",
         "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
     },
     "config": {

@@ -30,7 +30,7 @@ class Pricelist extends Model implements TranslatableContract
     protected $guarded = [];
     public $translatedAttributes = ['title', 'description'];
 
-    protected function setOrderAfterAttaching($items)
+    protected function setOrderAfterAttaching($items): void
     {
         $items_in_pricelist = $this->related_items()->count() - $items->count() + 1;
         $items->each(function ($item) use (&$items_in_pricelist) {
@@ -39,7 +39,7 @@ class Pricelist extends Model implements TranslatableContract
         });
     }
 
-    protected function setOrderAfterDetaching($items = null)
+    protected function setOrderAfterDetaching($items = null): void
     {
         $this->rearrangeItems();
     }
@@ -57,7 +57,7 @@ class Pricelist extends Model implements TranslatableContract
             });
     }
 
-    public function moveItemsUp(int $new_item_order)
+    public function moveItemsUp(int $new_item_order): void
     {
         $index = 0;
         $this
@@ -70,7 +70,7 @@ class Pricelist extends Model implements TranslatableContract
             });
     }
 
-    public function rearrangeItems()
+    public function rearrangeItems(): void
     {
         $index = 1;
         $this

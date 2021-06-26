@@ -5,13 +5,16 @@ namespace Nestermaks\LaravelPricelist\Models;
 use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Astrotomic\Translatable\Translatable;
 //use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 //use Nestermaks\LaravelPricelist\Database\Factories\PricelistItemFactory;
 use Nestermaks\LaravelPricelist\LaravelPricelist;
 
 /**
- *Nestermaks\LaravelPricelistItem\Models;
+ * Class PricelistItem
+ * @package Nestermaks\LaravelPricelist\Models
+ * @property int $id
  * @property string $shortcut
  * @property int $price
  * @property int $max_price
@@ -28,7 +31,7 @@ class PricelistItem extends Model implements TranslatableContract
     protected $guarded = [];
     public $translatedAttributes = ['title', 'units'];
 
-    protected function setOrderAfterAttaching($items)
+    protected function setOrderAfterAttaching(Collection $items): void
     {
         $items->each(function ($pricelist) {
             $items_in_pricelist = $pricelist->related_items()->count();
@@ -36,16 +39,10 @@ class PricelistItem extends Model implements TranslatableContract
         });
     }
 
-    protected function setOrderAfterDetaching($items)
+    protected function setOrderAfterDetaching(Collection $items): void
     {
         $items->each(function ($pricelist) {
             $pricelist->rearrangeItems();
         });
     }
-
-//
-//    protected static function newFactory(): Factory
-//    {
-//        return PricelistItemFactory::new();
-//    }
 }

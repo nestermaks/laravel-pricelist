@@ -22,12 +22,6 @@ class PricelistItemController
         );
     }
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
     public function store(Request $request): JsonResponse
     {
         try {
@@ -53,7 +47,7 @@ class PricelistItemController
         return \response()->json(['success' => 'success'], 201);
     }
 
-    public function show($id)
+    public function show(int $id): PricelistResource
     {
         return new PricelistResource(
             PricelistItem::where('id', $id)
@@ -64,12 +58,7 @@ class PricelistItemController
         );
     }
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
+
     public function update(Request $request, int $id): JsonResponse
     {
         try {

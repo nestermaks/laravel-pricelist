@@ -43,7 +43,7 @@ class PricelistController
         return \response()->json(['success' => 'success'], 201);
     }
 
-    public function show($id)
+    public function show($id): PricelistResource
     {
         return new PricelistResource(
             Pricelist::where('id', $id)
@@ -54,7 +54,7 @@ class PricelistController
         );
     }
 
-    public function update(Request $request, int $id)
+    public function update(Request $request, int $id): JsonResponse
     {
         try {
             $pricelist = Pricelist::where('id', $id)->firstOrFail();
