@@ -9,7 +9,6 @@ use Nestermaks\LaravelPricelist\Http\Resources\PricelistCollection;
 use Nestermaks\LaravelPricelist\Http\Resources\PricelistResource;
 use Nestermaks\LaravelPricelist\Models\PricelistItem;
 
-
 class PricelistItemController
 {
     public function index(): PricelistCollection
@@ -57,7 +56,6 @@ class PricelistItemController
                 ->first()
         );
     }
-
 
     public function update(Request $request, int $id): JsonResponse
     {

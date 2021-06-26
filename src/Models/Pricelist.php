@@ -10,12 +10,11 @@ use Illuminate\Database\Eloquent\Model;
 //use Nestermaks\LaravelPricelist\Database\Factories\PricelistFactory;
 use Nestermaks\LaravelPricelist\LaravelPricelist;
 
-
 /**
  * Class PricelistItem
  * @package Nestermaks\LaravelPricelist\Models
  *
- * @property integer $id
+ * @property int $id
  * @property string $title
  * @property string $description
  * @property int $order
