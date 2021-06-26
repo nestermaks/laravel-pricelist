@@ -84,6 +84,6 @@ class BaseController
 
     protected function getModelInstance($model_name, $model_id)
     {
-        return $model = $model_name::where('id', $model_id)->first();
+        return $model_name::where('id', $model_id)->first();
     }
 }
