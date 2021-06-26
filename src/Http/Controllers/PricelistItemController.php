@@ -9,6 +9,12 @@ use Nestermaks\LaravelPricelist\Http\Resources\PricelistCollection;
 use Nestermaks\LaravelPricelist\Http\Resources\PricelistResource;
 use Nestermaks\LaravelPricelist\Models\PricelistItem;
 
+
+/**
+ *
+ *
+ * @property string $shortcut
+ */
 class PricelistItemController
 {
     public function index(): PricelistCollection
@@ -25,12 +31,6 @@ class PricelistItemController
      * The attributes that should be cast to native types.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @property string shortcut
-     * @property int $price
-     * @property int $max_price
-     * @property bool $price_from
-     * @property bool $active
-     * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
     {
@@ -72,11 +72,6 @@ class PricelistItemController
      * The attributes that should be cast to native types.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @property string $shortcut
-     * @property int $price
-     * @property int $max_price
-     * @property bool $price_from
-     * @property bool $active
      */
     public function update(Request $request, int $id): JsonResponse
     {

@@ -10,6 +10,17 @@ use Illuminate\Database\Eloquent\Model;
 //use Nestermaks\LaravelPricelist\Database\Factories\PricelistFactory;
 use Nestermaks\LaravelPricelist\LaravelPricelist;
 
+
+/**
+ * Class PricelistItem
+ * @package Nestermaks\LaravelPricelist\Models
+ *
+ * @property integer $id
+ * @property string $title
+ * @property string $description
+ * @property int $order
+ * @property bool $active
+ */
 class Pricelist extends Model implements TranslatableContract
 {
     use LaravelPricelist;

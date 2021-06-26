@@ -13,7 +13,6 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
-//        $this->loadLaravelMigrations();
         $this->setUpDatabase();
 
         Factory::guessFactoryNamesUsing(
@@ -25,7 +24,6 @@ class TestCase extends Orchestra
     {
         return [
             LaravelPricelistServiceProvider::class,
-            TranslatableServiceProvider::class,
         ];
     }
 
