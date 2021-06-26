@@ -24,12 +24,13 @@ class PricelistItemController
     /**
      * The attributes that should be cast to native types.
      *
-     * @psalm-seal-properties
-     * @property string $shortcut
+     * @param  \Illuminate\Http\Request  $request
+     * @property string shortcut
      * @property int $price
      * @property int $max_price
      * @property boolean $price_from
      * @property boolean $active
+     * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
     {
@@ -70,7 +71,7 @@ class PricelistItemController
     /**
      * The attributes that should be cast to native types.
      *
-     * @psalm-seal-properties
+     * @param  \Illuminate\Http\Request  $request
      * @property string $shortcut
      * @property int $price
      * @property int $max_price
