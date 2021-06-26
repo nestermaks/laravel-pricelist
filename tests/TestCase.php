@@ -24,6 +24,7 @@ class TestCase extends Orchestra
     {
         return [
             LaravelPricelistServiceProvider::class,
+            TranslatableServiceProvider::class,
         ];
     }
 
