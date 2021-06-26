@@ -3,6 +3,7 @@
 
 namespace Nestermaks\LaravelPricelist\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse as JsonResponse;
 use Illuminate\Http\Request;
 use Nestermaks\LaravelPricelist\Http\Resources\PricelistCollection;
@@ -52,7 +53,7 @@ class BaseController
 
     //Get related pricelist for your model
 
-    public function getPricelistsOfModel($model_name, $model_id): PricelistCollection
+    public function getPricelistsOfModel(string $model_name, int $model_id): PricelistCollection
     {
         $model = $this->getModelInstance($model_name, $model_id);
 
@@ -82,7 +83,7 @@ class BaseController
         return \response()->json(['success' => 'success'], 200);
     }
 
-    protected function getModelInstance($model_name, $model_id)
+    protected function getModelInstance(string $model_name, int $model_id): Model
     {
         return $model_name::where('id', $model_id)->first();
     }
