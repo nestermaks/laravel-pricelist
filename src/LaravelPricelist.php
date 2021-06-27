@@ -2,6 +2,7 @@
 
 namespace Nestermaks\LaravelPricelist;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 use Nestermaks\LaravelPricelist\Models\Pricelist;
@@ -28,19 +29,19 @@ trait LaravelPricelist
         return self::where('active', true)->get();
     }
 
-    public function attach_items($related_items = []): void
+    public function attach_items(Collection $related_items): void
     {
         $this->related_items()->attach($related_items);
         $this->setOrderAfterAttaching($related_items);
     }
 
-    public function detach_items($related_items = []): void
+    public function detach_items(Collection $related_items): void
     {
         $this->related_items()->detach($related_items);
         $this->setOrderAfterDetaching($related_items);
     }
 
-    public function setItemOrder($related_model, $value): void
+    public function setItemOrder(Model $related_model, int $value): void
     {
         $this
             ->related_items()
