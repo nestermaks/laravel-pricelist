@@ -17,6 +17,7 @@ use Nestermaks\LaravelPricelist\LaravelPricelist;
  * @property int $id
  * @property string $title
  * @property string $description
+ * @property string $locale
  * @property int $order
  * @property bool $active
  */

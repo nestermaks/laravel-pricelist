@@ -15,6 +15,8 @@ use Nestermaks\LaravelPricelist\LaravelPricelist;
  * Class PricelistItem
  * @package Nestermaks\LaravelPricelist\Models
  * @property int $id
+ * @property string $title
+ * @property string $units
  * @property string $shortcut
  * @property int $price
  * @property int $max_price

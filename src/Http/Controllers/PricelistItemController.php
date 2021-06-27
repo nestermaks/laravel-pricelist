@@ -4,7 +4,8 @@
 namespace Nestermaks\LaravelPricelist\Http\Controllers;
 
 use Illuminate\Http\JsonResponse as JsonResponse;
-use Illuminate\Http\Request;
+use Nestermaks\LaravelPricelist\Http\Requests\StorePricelistItemRequest;
+use Nestermaks\LaravelPricelist\Http\Requests\UpdatePricelistItemRequest;
 use Nestermaks\LaravelPricelist\Http\Resources\PricelistCollection;
 use Nestermaks\LaravelPricelist\Http\Resources\PricelistResource;
 use Nestermaks\LaravelPricelist\Models\PricelistItem;
@@ -21,8 +22,10 @@ class PricelistItemController
         );
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(StorePricelistItemRequest $request): JsonResponse
     {
+        $request->validated();
+
         try {
             $item = new PricelistItem();
 
@@ -57,18 +60,40 @@ class PricelistItemController
         );
     }
 
-    public function update(Request $request, int $id): JsonResponse
+    public function update(UpdatePricelistItemRequest $request, int $id): JsonResponse
     {
+        $request->validated();
+
         try {
             $item = PricelistItem::where('id', $id)->firstOrFail();
 
-            $item->translateOrNew($request->lang)->title = $request->title;
-            $item->translateOrNew($request->lang)->units = $request->units;
-            $item->shortcut = $request->shortcut;
-            $item->price = $request->price;
-            $item->max_price = $request->max_price;
-            $item->price_from = $request->price_from;
-            $item->active = $request->active;
+            if ($request->title) {
+                $item->translateOrNew($request->lang)->title = $request->title;
+            }
+
+            if ($request->units) {
+                $item->translateOrNew($request->lang)->units = $request->units;
+            }
+
+            if ($request->shortcut) {
+                $item->shortcut = $request->shortcut;
+            }
+
+            if ($request->price !== null) {
+                $item->price = $request->price;
+            }
+
+            if ($request->max_price !== null) {
+                $item->max_price = $request->max_price;
+            }
+
+            if ($request->price_from !== null) {
+                $item->price_from = $request->price_from;
+            }
+
+            if ($request->active !== null) {
+                $item->active = $request->active;
+            }
 
             $item->save();
         } catch (\Exception $e) {
