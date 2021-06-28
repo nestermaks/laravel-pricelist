@@ -16,6 +16,7 @@ class LaravelPricelistServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('laravel-pricelist')
+            ->hasTranslations()
             ->hasConfigFile('pricelist')
             ->hasRoute('api')
             ->hasMigrations([

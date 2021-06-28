@@ -43,10 +43,21 @@ class PricelistController
                 return response()->json($e);
             }
 
-            return response()->json(['error' => 'Something went wrong']);
+            return \response()
+                ->json([
+                    'error' => trans(
+                        'pricelist::fail.pricelist-created',
+                        ['title' => $pricelist->translateOrDefault(app()->getLocale())->title], app()->getLocale())],
+                );
         }
 
-        return \response()->json(['success' => 'success'], 201);
+        return \response()
+            ->json([
+                'success' => trans(
+                    'pricelist::success.pricelist-created',
+                    ['title' => $pricelist->translateOrDefault(app()->getLocale())->title], app()->getLocale())],
+                201
+            );
     }
 
     public function show($id): PricelistResource
@@ -90,25 +101,48 @@ class PricelistController
                 return response()->json($e);
             }
 
-            return response()->json(['error' => 'Something went wrong']);
+            return \response()
+                ->json([
+                    'error' => trans(
+                        'pricelist::fail.pricelist-updated',
+                        ['title' => $pricelist->translateOrDefault(app()->getLocale())->title], app()->getLocale())],
+                );
         }
 
-        return \response()->json(['success' => 'success'], 200);
+        return \response()
+            ->json([
+                'success' => trans(
+                    'pricelist::success.pricelist-updated',
+                    ['title' => $pricelist->translateOrDefault(app()->getLocale())->title], app()->getLocale())],
+                200
+            );
     }
 
     public function destroy(int $id): JsonResponse
     {
         try {
             $pricelist = Pricelist::where('id', $id)->firstOrFail();
+            $pricelist_title = $pricelist->translateOrDefault(app()->getLocale())->title;
             $pricelist->delete();
         } catch (\Exception $e) {
             if (config('app.debug')) {
-                return response()->json($e);
+                return \response()->json($e);
             }
 
-            return response()->json(['error' => 'Something went wrong']);
+            return \response()
+                ->json([
+                    'error' => trans(
+                        'pricelist::fail.pricelist-deleted',
+                        ['title' => $pricelist_title], app()->getLocale())],
+                );
         }
 
-        return \response()->json(['success' => 'success'], 200);
+        return \response()
+            ->json([
+                'success' => trans(
+                    'pricelist::success.pricelist-deleted',
+                    ['title' => $pricelist_title], app()->getLocale())],
+                200
+            );
     }
 }

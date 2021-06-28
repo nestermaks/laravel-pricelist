@@ -23,12 +23,6 @@ class StorePricelistRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'title' => ['required', 'max:256'],
-            'description' => ['max:1000'],
-            'lang' => ['required', 'max:16'],
-            'order' => ['numeric', 'min:0', 'max:65535'],
-            'active' => ['boolean']
-        ];
+        return config('pricelist.store-pricelists');
     }
 }

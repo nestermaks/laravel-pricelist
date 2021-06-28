@@ -23,14 +23,6 @@ class UpdatePricelistItemRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'title' => ['max:256'],
-            'units' => ['max:256'],
-            'shortcut' => ['max:256'],
-            'price' => ['numeric', 'min:0'],
-            'max_price' => ['prohibited_if:price_from,true'],
-            'price_from' => ['boolean'],
-            'active' => ['boolean']
-        ];
+        return config('pricelist.update-pricelist-items');
     }
 }

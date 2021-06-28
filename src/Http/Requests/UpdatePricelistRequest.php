@@ -11,7 +11,7 @@ class UpdatePricelistRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,14 +21,8 @@ class UpdatePricelistRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
-        return [
-            'title' => ['max:256'],
-            'description' => ['max:1000'],
-            'lang' => ['max:16'],
-            'order' => ['numeric', 'min:0', 'max:65535'],
-            'active' => ['boolean']
-        ];
+        return config('pricelist.update-pricelists');
     }
 }

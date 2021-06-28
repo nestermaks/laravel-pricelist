@@ -23,13 +23,6 @@ class StorePricelistItemRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'title' => ['required', 'max:256'],
-            'units' => ['required', 'max:256'],
-            'shortcut' => ['required', 'max:256'],
-            'price' => ['required', 'numeric', 'min:0'],
-            'max_price' => ['prohibited_if:price_from,true'],
-            'active' => ['boolean']
-        ];
+        return config('pricelist.store-pricelist-items');
     }
 }

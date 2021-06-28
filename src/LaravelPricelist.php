@@ -4,7 +4,7 @@ namespace Nestermaks\LaravelPricelist;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Nestermaks\LaravelPricelist\Models\Pricelist;
 use Nestermaks\LaravelPricelist\Models\PricelistItem;
 
@@ -50,7 +50,7 @@ trait LaravelPricelist
             );
     }
 
-    public function getItemOrder($related_model)
+    public function getItemOrder(Model $related_model): int
     {
         return $this
             ->related_items()
@@ -59,7 +59,7 @@ trait LaravelPricelist
             ->pivot->item_order;
     }
 
-    public function changeItemOrder($related_model, $new_order)
+    public function changeItemOrder(Model $related_model, int $new_order): void
     {
         $pricelist = $related_model;
         $item = $this;

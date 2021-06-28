@@ -5,6 +5,7 @@ namespace Nestermaks\LaravelPricelist\Models;
 use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Astrotomic\Translatable\Translatable;
 //use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 //use Nestermaks\LaravelPricelist\Database\Factories\PricelistFactory;
@@ -30,7 +31,7 @@ class Pricelist extends Model implements TranslatableContract
     protected $guarded = [];
     public $translatedAttributes = ['title', 'description'];
 
-    protected function setOrderAfterAttaching($items): void
+    protected function setOrderAfterAttaching(Collection $items): void
     {
         $items_in_pricelist = $this->related_items()->count() - $items->count() + 1;
         $items->each(function ($item) use (&$items_in_pricelist) {
@@ -44,7 +45,7 @@ class Pricelist extends Model implements TranslatableContract
         $this->rearrangeItems();
     }
 
-    public function moveItemsDown(int $new_item_order)
+    public function moveItemsDown(int $new_item_order): void
     {
         $index = $this->related_items()->count() + 1;
         $this
