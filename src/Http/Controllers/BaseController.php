@@ -51,7 +51,7 @@ class BaseController
         return \response()->json(['success' => 'success'], 200);
     }
 
-    //Get related pricelist for your model
+    //Get related pricelist of your model
 
     public function getPricelistsOfModel(string $model_name, int $model_id): PricelistCollection
     {
@@ -66,7 +66,7 @@ class BaseController
         );
     }
 
-    //Attach and detach pricelist for your model
+    //Attach and detach pricelist from your model
 
     public function relationWithModel(Request $request): JsonResponse
     {

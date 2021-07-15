@@ -30,7 +30,7 @@ class PricelistItemTest extends TestCase
         $pricelists = Pricelist::getActiveItems();
         $item = PricelistItem::firstOrFail();
 
-        $item->attach_items($pricelists);
+        $item->attachItems($pricelists);
 
         $this->assertEquals(5, $item->relatedItems->count());
     }
@@ -44,15 +44,15 @@ class PricelistItemTest extends TestCase
         $pricelists = Pricelist::getActiveItems();
         $item = PricelistItem::firstOrFail();
 
-        $item->attach_items($pricelists);
+        $item->attachItems($pricelists);
         $detached_single_item = $item->relatedItems->where('id', 1);
 
-        $item->detach_items($detached_single_item);
+        $item->detachItems($detached_single_item);
 
         $this->assertEquals(4, $item->relatedItems()->count());
 
         $detach_all = $item->relatedItems;
-        $item->detach_items($detach_all);
+        $item->detachItems($detach_all);
 
         $this->assertEquals(0, $item->relatedItems()->count());
     }
@@ -66,7 +66,7 @@ class PricelistItemTest extends TestCase
         $pricelist = Pricelist::firstOrFail();
         $item = PricelistItem::firstOrFail();
 
-        $pricelist->attach_items($item->get());
+        $pricelist->attachItems($item->get());
 
         $item->setItemOrder($pricelist, 222);
 
@@ -85,19 +85,19 @@ class PricelistItemTest extends TestCase
         $pricelist = Pricelist::where('id', 3)->firstOrFail();
         $item = PricelistItem::where('id', 4)->firstOrFail();
 
-        $item->attach_items(Pricelist::where('id', 3)->get());
+        $item->attachItems(Pricelist::where('id', 3)->get());
 
         $this->assertTrue(! empty($item->relatedItems()->where('pricelist_pricelist_item.item_order', 1)->first()));
 
-        $pricelist->attach_items($all_items);
+        $pricelist->attachItems($all_items);
 
-        $pricelist->detach_items($all_items->whereIn('id', [2, 4]));
+        $pricelist->detachItems($all_items->whereIn('id', [2, 4]));
 
-        $item->attach_items($all_pricelists);
+        $item->attachItems($all_pricelists);
 
         $this->assertEquals(4, $pricelist->relatedItems()->where('pricelist_pricelist_item.item_order', 4)->first()->id);
 
-        PricelistItem::where('id', 1)->firstOrFail()->detach_items(Pricelist::where('id', 3)->get());
+        PricelistItem::where('id', 1)->firstOrFail()->detachItems(Pricelist::where('id', 3)->get());
 
         $this->assertEquals(4, $pricelist->relatedItems()->where('pricelist_pricelist_item.item_order', 3)->first()->id);
     }

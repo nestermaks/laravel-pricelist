@@ -29,13 +29,13 @@ trait LaravelPricelist
         return self::where('active', true)->get();
     }
 
-    public function attach_items(Collection $related_items): void
+    public function attachItems(Collection $related_items): void
     {
         $this->relatedItems()->attach($related_items);
         $this->setOrderAfterAttaching($related_items);
     }
 
-    public function detach_items(Collection $related_items): void
+    public function detachItems(Collection $related_items): void
     {
         $this->relatedItems()->detach($related_items);
         $this->setOrderAfterDetaching($related_items);

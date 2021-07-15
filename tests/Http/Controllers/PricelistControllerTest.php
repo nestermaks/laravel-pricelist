@@ -33,7 +33,7 @@ class PricelistControllerTest extends TestCase
         $this->pricelists = Pricelist::getActiveItems();
         $this->items = PricelistItem::getActiveItems();
 
-        $this->item->attach_items(Pricelist::whereIn('id', [1,2,3,4,5])->get());
+        $this->item->attachItems(Pricelist::whereIn('id', [1,2,3,4,5])->get());
 
         foreach ($this->pricelists as $i) {
             $i->rearrangeItems();

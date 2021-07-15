@@ -125,7 +125,7 @@ return [
 
 ```
 
-##Database
+## Database
 Migrations files are provided with such tables:
 1. **pricelists**. This table is like a container for pricelist items. It has such fields:
     1. 'order' - sets priority on a frontend
@@ -163,7 +163,7 @@ Migrations files are provided with such tables:
 
 ## Usage
 
-###Registering Models
+### Registering Models
 To let your models be able to attach pricelists, add the HasPricelist trait to your model class
 
 ```php
@@ -179,7 +179,7 @@ class Offer extends Model
 }
 ```
 
-###Associating pricelists
+### Associating pricelists
 You can associate a pricelist with a model like this:
 
 ```php
@@ -198,7 +198,7 @@ To watch all pricelists of the model:
 $offer->pricelists();
 ```
 
-###Show pricelists and pricelist items
+### Show pricelists and pricelist items
 To show all active pricelists:
 ```php
 Pricelist::getActiveItems();
@@ -215,10 +215,110 @@ To show pricelists where the pricelist item is present:
 ```php
 PricelistItem::relatedItems();
 ```
+---
+### Attach and detach pricelist items to pricelist
+Assuming we have such variables:
+```php
+$pricelists = Pricelist::all();
+$pricelist = Pricelist::first();
+$pricelist_items = PricelistItem::all();
+$pricelist_item = PricelistItem::first();
+```
+To attach items to the pricelist:
+```php
+$pricelist->attachItems($pricelist_items);
+```
+Or to attach one pricelist item to many pricelists:
 
-###Attach and detach pricelist items
+```php
+$pricelist_item->attachItems($pricelists);
+```
+
+> Notice that the argument in both cases is a Collection.
+
+### Reordering pricelist items within the pricelist
+
+When you attach pricelist items to the pricelist, each of them gets its order number. To see order number of a pricelist item in the pricelist use:
+```php
+$pricelist->getItemOrder($pricelist_item);
+```
+or
+```php
+$pricelist_item->getItemOrder($pricelist);
+```
+To set a new order number of a pricelist item within the pricelist use:
+```php
+$pricelist->changeItemOrder($pricelist_item, 3);
+```
+or
+```php
+$pricelist_item->changeItemOrder($pricelist, 3);
+```
+>Second argument is for new order number. After you assign a new order number of the pricelist item, another ones will rearrange appropriately inside the pricelist.
+
+## Api routes
+
+You may use api calls to manage your pricelists. Set desired api prefixes in a config file or leave it default. For pricelists and pricelists items CRUDS are used api resource routes with api resource controllers. You may look through the Laravel [DOCS](https://laravel.com/docs/8.x/controllers#api-resource-routes).
+
+### CRUDS
+
+#### Pricelists
+
+Parameters to use in CRUDS:
+   1. title
+   2. description
+   3. lang
+   4. order
+   5. active
+
+For example, to update a pricelist with id "12" make a patch request:
+```
+https://yoursite.com/nestermaks-api/pricelists/12?active=0&title=web site development&description=here goes description&lang=en&order=10
+```
+
+#### Pricelist items
+
+Parameters to use in CRUDS:
+   1. title
+   2. units
+   3. lang
+   4. shortcut
+   5. price
+   6. max_price
+   7. price_from
+   8. active
+      
+For example, to update a pricelist with id "12" item make a patch request:
+```
+https://yoursite.com/nestermaks-api/pricelist-items/12?title=landing page development&units=hour&lang=en&shortcut=land-dev&price=10&max-price=15&price-from=0&active=1
+```
+
+### Attach and detach pricelists from pricelist items
+
+URL should look like:
+
+```
+https://yoursite.com/nestermaks-api/pricelists/relation/{$action}
+```
+
+$action can be 'detachItems' of 'AttachItems'
+
+Parameters:
+   1. pricelist_id
+   2. pricelist_items_id
+
+One of them should be integer while another one should be an array.
+
+Example:
+```
+https://yoursite.com/nestermaks-api/pricelists/relation/attachItems?pricelist_id=2&pricelist_item_id=[3,4,5,6]
+```
 
 
+
+### Associate pricelist with your model
+
+URL should look like
 
 ## Testing
 

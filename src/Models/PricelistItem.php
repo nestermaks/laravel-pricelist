@@ -35,7 +35,7 @@ class PricelistItem extends Model implements TranslatableContract
     protected function setOrderAfterAttaching(Collection $items): void
     {
         $items->each(function ($pricelist) {
-            $items_in_pricelist = $pricelist->related_items()->count();
+            $items_in_pricelist = $pricelist->relatedItems()->count();
             $this->setItemOrder($pricelist, $items_in_pricelist);
         });
     }

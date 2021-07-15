@@ -31,7 +31,7 @@ class PricelistTest extends TestCase
         $pricelist = Pricelist::firstOrFail();
         $items = PricelistItem::getActiveItems();
 
-        $pricelist->attach_items($items);
+        $pricelist->attachItems($items);
 
         $this->assertEquals(5, $pricelist->relatedItems()->count());
     }
@@ -45,15 +45,15 @@ class PricelistTest extends TestCase
         $pricelist = Pricelist::firstOrFail();
         $items = PricelistItem::getActiveItems();
 
-        $pricelist->attach_items($items);
+        $pricelist->attachItems($items);
         $detached_single_item = $pricelist->relatedItems()->firstOrFail();
 
-        $pricelist->detach_items($detached_single_item->where('id', 1)->get());
+        $pricelist->detachItems($detached_single_item->where('id', 1)->get());
 
         $this->assertEquals(4, $pricelist->relatedItems()->count());
 
         $detach_all = $pricelist->relatedItems;
-        $pricelist->detach_items($detach_all);
+        $pricelist->detachItems($detach_all);
 
         $this->assertEquals(0, $pricelist->relatedItems()->count());
     }
@@ -67,9 +67,9 @@ class PricelistTest extends TestCase
         $pricelist = Pricelist::firstOrFail();
         $items = PricelistItem::getActiveItems();
 
-        $pricelist->attach_items($items);
+        $pricelist->attachItems($items);
 
-        $pricelist->detach_items($items->whereIn('id', [2, 4]));
+        $pricelist->detachItems($items->whereIn('id', [2, 4]));
 
         assertNotContains(2, $pricelist->relatedItems->pluck('id'));
         assertNotContains(4, $pricelist->relatedItems->pluck('id'));
@@ -88,7 +88,7 @@ class PricelistTest extends TestCase
         PricelistItem::factory()->count(5)->create();
         $pricelist = Pricelist::firstOrFail();
         $items = PricelistItem::getActiveItems();
-        $pricelist->attach_items($items);
+        $pricelist->attachItems($items);
 
         $test_model->addPricelist($pricelist);
 
@@ -106,7 +106,7 @@ class PricelistTest extends TestCase
         PricelistItem::factory()->count(5)->create();
         $pricelist = Pricelist::firstOrFail();
         $items = PricelistItem::getActiveItems();
-        $pricelist->attach_items($items);
+        $pricelist->attachItems($items);
 
         $test_model->addPricelist($pricelist);
 
@@ -126,7 +126,7 @@ class PricelistTest extends TestCase
         $items = PricelistItem::getActiveItems();
         $changed_item = $items->where('id', 4)->first();
 
-        $pricelist->attach_items($items);
+        $pricelist->attachItems($items);
 
         $pricelist->setItemOrder($changed_item, 5);
 
@@ -143,7 +143,7 @@ class PricelistTest extends TestCase
         $changed_item = PricelistItem::where('id', 4)->first();
         $items = PricelistItem::getActiveItems();
 
-        $pricelist->attach_items($items);
+        $pricelist->attachItems($items);
 
         $pricelist->changeItemOrder($changed_item, 2);
         $this->assertEquals([1, 4, 2, 3, 5], $pricelist->relatedItems()->orderBy('pivot_item_order', 'asc')->get()->pluck('id')->toArray());
