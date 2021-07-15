@@ -4,16 +4,13 @@ namespace Nestermaks\LaravelPricelist\Models;
 
 use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Astrotomic\Translatable\Translatable;
-//use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-//use Nestermaks\LaravelPricelist\Database\Factories\PricelistFactory;
 use Nestermaks\LaravelPricelist\LaravelPricelist;
 
 /**
  * Class PricelistItem
- * @package Nestermaks\LaravelPricelist\Models
  *
  * @property int $id
  * @property string $title
@@ -33,7 +30,7 @@ class Pricelist extends Model implements TranslatableContract
 
     protected function setOrderAfterAttaching(Collection $items): void
     {
-        $items_in_pricelist = $this->related_items()->count() - $items->count() + 1;
+        $items_in_pricelist = $this->relatedItems()->count() - $items->count() + 1;
         $items->each(function ($item) use (&$items_in_pricelist) {
             $this->setItemOrder($item, $items_in_pricelist);
             $items_in_pricelist += 1;
@@ -47,9 +44,9 @@ class Pricelist extends Model implements TranslatableContract
 
     public function moveItemsDown(int $new_item_order): void
     {
-        $index = $this->related_items()->count() + 1;
+        $index = $this->relatedItems()->count() + 1;
         $this
-            ->related_items()
+            ->relatedItems()
             ->orderBy('pivot_item_order', 'desc')
             ->wherePivot('item_order', '>=', $new_item_order)
             ->each(function ($item) use (&$index) {
@@ -62,7 +59,7 @@ class Pricelist extends Model implements TranslatableContract
     {
         $index = 0;
         $this
-            ->related_items()
+            ->relatedItems()
             ->orderBy('pivot_item_order')
             ->wherePivot('item_order', '<=', $new_item_order)
             ->each(function ($item) use (&$index) {
@@ -75,7 +72,7 @@ class Pricelist extends Model implements TranslatableContract
     {
         $index = 1;
         $this
-            ->related_items()
+            ->relatedItems()
             ->orderBy('pivot_item_order')
             ->each(function ($item) use (&$index) {
                 $this->setItemOrder($item, $index);

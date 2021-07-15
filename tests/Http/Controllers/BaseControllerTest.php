@@ -24,13 +24,13 @@ class BaseControllerTest extends TestCase
                 PricelistItem::factory()
                     ->has(PricelistItemTranslation::factory(), 'translations')
                     ->count(5),
-                'related_items'
+                'relatedItems'
             )
             ->count(9)
             ->create();
 
         $this->pricelist = Pricelist::where('id', 4)->first();
-        $this->item = $this->pricelist->related_items()->first();
+        $this->item = $this->pricelist->relatedItems()->first();
         $this->pricelists = Pricelist::getActiveItems();
         $this->items = PricelistItem::getActiveItems();
 
@@ -74,8 +74,8 @@ class BaseControllerTest extends TestCase
 
         $response->assertStatus(200);
 
-        $this->assertContains(2, Pricelist::where('id', 3)->first()->related_items->pluck('id'));
-        $this->assertContains(2, Pricelist::where('id', 4)->first()->related_items->pluck('id'));
+        $this->assertContains(2, Pricelist::where('id', 3)->first()->relatedItems->pluck('id'));
+        $this->assertContains(2, Pricelist::where('id', 4)->first()->relatedItems->pluck('id'));
 
         $response = $this->post(
             config('pricelist.api') . '/' . config('pricelist.pricelists') . '/relation/detach_items',
@@ -87,8 +87,8 @@ class BaseControllerTest extends TestCase
 
         $response->assertStatus(200);
 
-        $this->assertNotContains(2, Pricelist::where('id', 3)->first()->related_items->pluck('id'));
-        $this->assertNotContains(2, Pricelist::where('id', 4)->first()->related_items->pluck('id'));
+        $this->assertNotContains(2, Pricelist::where('id', 3)->first()->relatedItems->pluck('id'));
+        $this->assertNotContains(2, Pricelist::where('id', 4)->first()->relatedItems->pluck('id'));
     }
 
     /** @test */
@@ -105,8 +105,8 @@ class BaseControllerTest extends TestCase
 
         $response->assertStatus(200);
 
-        $this->assertContains(26, Pricelist::where('id', 3)->first()->related_items->pluck('id'));
-        $this->assertContains(29, Pricelist::where('id', 3)->first()->related_items->pluck('id'));
+        $this->assertContains(26, Pricelist::where('id', 3)->first()->relatedItems->pluck('id'));
+        $this->assertContains(29, Pricelist::where('id', 3)->first()->relatedItems->pluck('id'));
     }
 
     /** @test */
@@ -122,8 +122,8 @@ class BaseControllerTest extends TestCase
 
         $response->assertStatus(200);
 
-        $this->assertContains(2, Pricelist::where('id', 3)->first()->related_items->pluck('id'));
-        $this->assertContains(2, Pricelist::where('id', 4)->first()->related_items->pluck('id'));
+        $this->assertContains(2, Pricelist::where('id', 3)->first()->relatedItems->pluck('id'));
+        $this->assertContains(2, Pricelist::where('id', 4)->first()->relatedItems->pluck('id'));
 
         $response = $this->post(
             config('pricelist.api') . '/' . config('pricelist.pricelists') . '/relation/detach_items',
@@ -135,8 +135,8 @@ class BaseControllerTest extends TestCase
 
         $response->assertStatus(200);
 
-        $this->assertNotContains(2, Pricelist::where('id', 3)->first()->related_items->pluck('id'));
-        $this->assertNotContains(2, Pricelist::where('id', 4)->first()->related_items->pluck('id'));
+        $this->assertNotContains(2, Pricelist::where('id', 3)->first()->relatedItems->pluck('id'));
+        $this->assertNotContains(2, Pricelist::where('id', 4)->first()->relatedItems->pluck('id'));
     }
 
     /** @test */
@@ -152,8 +152,8 @@ class BaseControllerTest extends TestCase
 
         $response->assertStatus(200);
 
-        $this->assertContains(3, PricelistItem::where('id', 4)->first()->related_items->pluck('id'));
-        $this->assertContains(3, PricelistItem::where('id', 5)->first()->related_items->pluck('id'));
+        $this->assertContains(3, PricelistItem::where('id', 4)->first()->relatedItems->pluck('id'));
+        $this->assertContains(3, PricelistItem::where('id', 5)->first()->relatedItems->pluck('id'));
 
         $response = $this->post(
             config('pricelist.api') . '/' . config('pricelist.pricelists') . '/relation/detach_items',
@@ -165,8 +165,8 @@ class BaseControllerTest extends TestCase
 
         $response->assertStatus(200);
 
-        $this->assertNotContains(2, Pricelist::where('id', 3)->first()->related_items->pluck('id'));
-        $this->assertNotContains(2, Pricelist::where('id', 4)->first()->related_items->pluck('id'));
+        $this->assertNotContains(2, Pricelist::where('id', 3)->first()->relatedItems->pluck('id'));
+        $this->assertNotContains(2, Pricelist::where('id', 4)->first()->relatedItems->pluck('id'));
     }
 
     /** @test */

@@ -33,7 +33,7 @@ return [
     ////////////////////////////////////////////////
     //Items amount shown when index method is called
     ////////////////////////////////////////////////
-    'pricelists-per-page' => 5,
+    'pricelists-per-page' => 10,
     'pricelist-items-per-page' => 10,
 
 

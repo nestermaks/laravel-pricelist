@@ -17,13 +17,12 @@ class PricelistController
     {
         return new PricelistCollection(
             Pricelist::withTranslation()
-                ->with('related_items')
-                ->with('related_items.translations')
+                ->with('relatedItems')
+                ->with('relatedItems.translations')
                 ->paginate(config('pricelist.pricelists-per-page'))
         );
     }
 
-//    public function store(Request $request): JsonResponse
     public function store(StorePricelistRequest $request): JsonResponse
     {
         $request->validated();
@@ -56,7 +55,7 @@ class PricelistController
                 'success' => trans(
                     'pricelist::success.pricelist-created',
                     ['title' => $pricelist->translateOrDefault(app()->getLocale())->title], app()->getLocale())],
-                201
+                    201
             );
     }
 
@@ -65,8 +64,8 @@ class PricelistController
         return new PricelistResource(
             Pricelist::where('id', $id)
                 ->withTranslation()
-                ->with('related_items')
-                ->with('related_items.translations')
+                ->with('relatedItems')
+                ->with('relatedItems.translations')
                 ->first()
         );
     }
@@ -75,8 +74,21 @@ class PricelistController
     {
         $request->validated();
 
+        $pricelist = Pricelist::where('id', $id)->first();
+
+        if (isset($pricelist)) {
+            $pricelist_title = $pricelist->translateOrDefault(app()->getLocale())->title;
+        } else {
+            return \response()
+                ->json([
+                    'error' => trans(
+                        'pricelist::fail.no-pricelist',
+                        ['id' => $id], app()->getLocale())],
+                        404
+                );
+        }
+
         try {
-            $pricelist = Pricelist::where('id', $id)->firstOrFail();
 
             if ($request->title) {
                 $pricelist->translateOrNew($request->lang)->title = $request->title;
@@ -105,7 +117,7 @@ class PricelistController
                 ->json([
                     'error' => trans(
                         'pricelist::fail.pricelist-updated',
-                        ['title' => $pricelist->translateOrDefault(app()->getLocale())->title], app()->getLocale())],
+                        ['title' => $pricelist_title], app()->getLocale())],
                 );
         }
 
@@ -114,15 +126,27 @@ class PricelistController
                 'success' => trans(
                     'pricelist::success.pricelist-updated',
                     ['title' => $pricelist->translateOrDefault(app()->getLocale())->title], app()->getLocale())],
-                200
+                    200
             );
     }
 
     public function destroy(int $id): JsonResponse
     {
-        try {
-            $pricelist = Pricelist::where('id', $id)->firstOrFail();
+        $pricelist = Pricelist::where('id', $id)->first();
+
+        if (isset($pricelist)) {
             $pricelist_title = $pricelist->translateOrDefault(app()->getLocale())->title;
+        } else {
+            return \response()
+                ->json([
+                    'error' => trans(
+                        'pricelist::fail.no-pricelist',
+                        ['id' => $id], app()->getLocale())],
+                        404
+                );
+        }
+
+        try {
             $pricelist->delete();
         } catch (\Exception $e) {
             if (config('app.debug')) {
@@ -142,7 +166,7 @@ class PricelistController
                 'success' => trans(
                     'pricelist::success.pricelist-deleted',
                     ['title' => $pricelist_title], app()->getLocale())],
-                200
+                    200
             );
     }
 }

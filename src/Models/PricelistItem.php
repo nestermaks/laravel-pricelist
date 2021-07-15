@@ -13,7 +13,6 @@ use Nestermaks\LaravelPricelist\LaravelPricelist;
 
 /**
  * Class PricelistItem
- * @package Nestermaks\LaravelPricelist\Models
  * @property int $id
  * @property string $title
  * @property string $units

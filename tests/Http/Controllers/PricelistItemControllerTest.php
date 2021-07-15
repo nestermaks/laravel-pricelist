@@ -23,13 +23,13 @@ class PricelistItemControllerTest extends TestCase
                 PricelistItem::factory()
                     ->has(PricelistItemTranslation::factory(), 'translations')
                     ->count(5),
-                'related_items'
+                'relatedItems'
             )
             ->count(9)
             ->create();
 
         $this->pricelist = Pricelist::where('id', 4)->first();
-        $this->item = $this->pricelist->related_items()->first();
+        $this->item = $this->pricelist->relatedItems()->first();
         $this->pricelists = Pricelist::getActiveItems();
         $this->items = PricelistItem::getActiveItems();
 

@@ -23,7 +23,7 @@ class BaseController
 
             $pricelist->changeItemOrder($item, $request->item_order);
         } catch (\Exception $e) {
-            return \response()->json(['error' => 'error'], 500);
+            return response()->json($e);
         }
 
         return \response()->json(['success' => 'success'], 200);
@@ -45,7 +45,7 @@ class BaseController
 
             $model->$action($related_items);
         } catch (\Exception $e) {
-            return \response()->json(['error' => 'error'], 500);
+            return response()->json($e);
         }
 
         return \response()->json(['success' => 'success'], 200);
@@ -60,8 +60,8 @@ class BaseController
         return new PricelistCollection(
             $model->pricelists()
                 ->withTranslation()
-                ->with('related_items')
-                ->with('related_items.translations')
+                ->with('relatedItems')
+                ->with('relatedItems.translations')
                 ->paginate(config('pricelist.pricelists-per-page'))
         );
     }
@@ -77,7 +77,7 @@ class BaseController
 
             $model->$action($pricelist);
         } catch (\Exception $e) {
-            return \response()->json(['error' => 'error'], 500);
+            return response()->json($e);
         }
 
         return \response()->json(['success' => 'success'], 200);

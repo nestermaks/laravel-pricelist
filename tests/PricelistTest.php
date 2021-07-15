@@ -33,7 +33,7 @@ class PricelistTest extends TestCase
 
         $pricelist->attach_items($items);
 
-        $this->assertEquals(5, $pricelist->related_items()->count());
+        $this->assertEquals(5, $pricelist->relatedItems()->count());
     }
 
     /** @test */
@@ -46,16 +46,16 @@ class PricelistTest extends TestCase
         $items = PricelistItem::getActiveItems();
 
         $pricelist->attach_items($items);
-        $detached_single_item = $pricelist->related_items()->firstOrFail();
+        $detached_single_item = $pricelist->relatedItems()->firstOrFail();
 
         $pricelist->detach_items($detached_single_item->where('id', 1)->get());
 
-        $this->assertEquals(4, $pricelist->related_items()->count());
+        $this->assertEquals(4, $pricelist->relatedItems()->count());
 
-        $detach_all = $pricelist->related_items;
+        $detach_all = $pricelist->relatedItems;
         $pricelist->detach_items($detach_all);
 
-        $this->assertEquals(0, $pricelist->related_items()->count());
+        $this->assertEquals(0, $pricelist->relatedItems()->count());
     }
 
     /** @test */
@@ -71,15 +71,14 @@ class PricelistTest extends TestCase
 
         $pricelist->detach_items($items->whereIn('id', [2, 4]));
 
-        assertNotContains(2, $pricelist->related_items->pluck('id'));
-        assertNotContains(4, $pricelist->related_items->pluck('id'));
-        assertContains(3, $pricelist->related_items->pluck('id'));
+        assertNotContains(2, $pricelist->relatedItems->pluck('id'));
+        assertNotContains(4, $pricelist->relatedItems->pluck('id'));
+        assertContains(3, $pricelist->relatedItems->pluck('id'));
     }
 
     /** @test */
     public function it_can_be_attached_to_another_model()
     {
-//        $test_model = TestModel::factory()->create();
 
         $test_model = TestModel::create([
             'title' => 'Hello',
@@ -147,15 +146,15 @@ class PricelistTest extends TestCase
         $pricelist->attach_items($items);
 
         $pricelist->changeItemOrder($changed_item, 2);
-        $this->assertEquals([1, 4, 2, 3, 5], $pricelist->related_items()->orderBy('pivot_item_order', 'asc')->get()->pluck('id')->toArray());
+        $this->assertEquals([1, 4, 2, 3, 5], $pricelist->relatedItems()->orderBy('pivot_item_order', 'asc')->get()->pluck('id')->toArray());
 
         $pricelist->changeItemOrder($changed_item, 5);
-        $this->assertEquals([1, 2, 3, 5, 4], $pricelist->related_items()->orderBy('pivot_item_order', 'asc')->get()->pluck('id')->toArray());
+        $this->assertEquals([1, 2, 3, 5, 4], $pricelist->relatedItems()->orderBy('pivot_item_order', 'asc')->get()->pluck('id')->toArray());
 
         $changed_item->changeItemOrder($pricelist, 1);
-        $this->assertEquals([4, 1, 2, 3, 5], $pricelist->related_items()->orderBy('pivot_item_order', 'asc')->get()->pluck('id')->toArray());
+        $this->assertEquals([4, 1, 2, 3, 5], $pricelist->relatedItems()->orderBy('pivot_item_order', 'asc')->get()->pluck('id')->toArray());
 
         $changed_item->changeItemOrder($pricelist, 3);
-        $this->assertEquals([1, 2, 4, 3, 5], $pricelist->related_items()->orderBy('pivot_item_order', 'asc')->get()->pluck('id')->toArray());
+        $this->assertEquals([1, 2, 4, 3, 5], $pricelist->relatedItems()->orderBy('pivot_item_order', 'asc')->get()->pluck('id')->toArray());
     }
 }

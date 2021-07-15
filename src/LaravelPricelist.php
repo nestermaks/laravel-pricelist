@@ -19,7 +19,7 @@ trait LaravelPricelist
         return $name;
     }
 
-    public function related_items(): BelongsToMany
+    public function relatedItems(): BelongsToMany
     {
         return $this->belongsToMany($this->getRelatedClass())->withPivot('item_order');
     }
@@ -31,20 +31,20 @@ trait LaravelPricelist
 
     public function attach_items(Collection $related_items): void
     {
-        $this->related_items()->attach($related_items);
+        $this->relatedItems()->attach($related_items);
         $this->setOrderAfterAttaching($related_items);
     }
 
     public function detach_items(Collection $related_items): void
     {
-        $this->related_items()->detach($related_items);
+        $this->relatedItems()->detach($related_items);
         $this->setOrderAfterDetaching($related_items);
     }
 
     public function setItemOrder(Model $related_model, int $value): void
     {
         $this
-            ->related_items()
+            ->relatedItems()
             ->syncWithoutDetaching(
                 [$related_model->id => ['item_order' => $value]]
             );
@@ -53,7 +53,7 @@ trait LaravelPricelist
     public function getItemOrder(Model $related_model): int
     {
         return $this
-            ->related_items()
+            ->relatedItems()
             ->wherePivot(substr($related_model->getTable(), 0, -1) . '_id', $related_model->id)
             ->first()
             ->pivot->item_order;
