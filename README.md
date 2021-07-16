@@ -402,7 +402,9 @@ Parameters:
 
 Example:
 
+```
 https://yoursite.com/nestermaks-api/pricelists/get/App\Models\User/3
+```
 
 ### Change pricelist item order within a pricelist
 
