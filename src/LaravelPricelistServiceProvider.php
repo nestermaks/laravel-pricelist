@@ -22,7 +22,8 @@ class LaravelPricelistServiceProvider extends PackageServiceProvider
             ->hasMigrations([
                 'create_pricelist_tables',
                 'create_pricelist_translation_tables',
-            ]);
+            ])
+        ;
     }
 
     public function packageRegistered()

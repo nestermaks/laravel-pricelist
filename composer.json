@@ -1,10 +1,11 @@
 {
     "name": "nestermaks/laravel-pricelist",
-    "description": "This is my package LaravelPricelist",
+    "description": "Multilingual pricelist package for Laravel with migrations and API controllers",
     "keywords": [
         "nestermaks",
         "laravel",
-        "laravel-pricelist"
+        "laravel-pricelist",
+        "pricelist"
     ],
     "homepage": "https://github.com/nestermaks/laravel-pricelist",
     "license": "MIT",

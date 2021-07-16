@@ -65,8 +65,9 @@ class BaseControllerTest extends TestCase
     public function it_attaches_pricelists_to_item_through_api()
     {
         $response = $this->post(
-            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/relation/attachItems',
+            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/relation',
             [
+                'action' => 'attachItems',
                 'pricelist_id' => [3, 4],
                 'pricelist_item_id' => 2,
             ]
@@ -78,8 +79,9 @@ class BaseControllerTest extends TestCase
         $this->assertContains(2, Pricelist::where('id', 4)->first()->relatedItems->pluck('id'));
 
         $response = $this->post(
-            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/relation/detachItems',
+            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/relation',
             [
+                'action' => 'detachItems',
                 'pricelist_id' => [3, 4],
                 'pricelist_item_id' => 2,
             ]
@@ -95,11 +97,11 @@ class BaseControllerTest extends TestCase
     public function it_attaches_items_to_pricelist_through_api()
     {
         $response = $this->post(
-            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/relation/attachItems',
+            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/relation',
             [
+                'action' => 'attachItems',
                 'pricelist_id' => 3,
                 'pricelist_item_id' => [26, 29],
-                'action' => 'attachItems',
             ]
         );
 
@@ -113,8 +115,9 @@ class BaseControllerTest extends TestCase
     public function it_detaches_pricelists_from_the_item_through_api()
     {
         $response = $this->post(
-            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/relation/attachItems',
+            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/relation',
             [
+                'action' => 'attachItems',
                 'pricelist_id' => [3, 4],
                 'pricelist_item_id' => 2,
             ]
@@ -126,8 +129,9 @@ class BaseControllerTest extends TestCase
         $this->assertContains(2, Pricelist::where('id', 4)->first()->relatedItems->pluck('id'));
 
         $response = $this->post(
-            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/relation/detachItems',
+            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/relation',
             [
+                'action' => 'detachItems',
                 'pricelist_id' => [3, 4],
                 'pricelist_item_id' => 2,
             ]
@@ -143,8 +147,9 @@ class BaseControllerTest extends TestCase
     public function it_detaches_items_from_the_pricelist_through_api()
     {
         $response = $this->post(
-            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/relation/attachItems',
+            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/relation',
             [
+                'action' => 'attachItems',
                 'pricelist_id' => 3,
                 'pricelist_item_id' => [4,5],
             ]
@@ -156,8 +161,9 @@ class BaseControllerTest extends TestCase
         $this->assertContains(3, PricelistItem::where('id', 5)->first()->relatedItems->pluck('id'));
 
         $response = $this->post(
-            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/relation/detachItems',
+            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/relation',
             [
+                'action' => 'detachItems',
                 'pricelist_id' => 3,
                 'pricelist_item_id' => [4],
             ]
@@ -177,8 +183,9 @@ class BaseControllerTest extends TestCase
         ]);
 
         $response = $this->post(
-            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/model/addPricelist',
+            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/model',
             [
+                'action' => 'addPricelist',
                 'model_name' => 'Nestermaks\LaravelPricelist\Tests\Extra\TestModel',
                 'pricelist_id' => 1,
                 'model_id' => 1,
@@ -190,8 +197,9 @@ class BaseControllerTest extends TestCase
         $this->assertEquals(1, TestModel::first()->pricelists->where('id', 1)->first()->id);
 
         $response = $this->post(
-            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/model/removePricelist',
+            config('pricelist.api') . '/' . config('pricelist.pricelists') . '/model',
             [
+                'action' => 'removePricelist',
                 'model_name' => 'Nestermaks\LaravelPricelist\Tests\Extra\TestModel',
                 'pricelist_id' => 1,
                 'model_id' => 1,

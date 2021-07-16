@@ -15,6 +15,29 @@ This package includes:
 5. Translations
 6. Config file
 
+## Table of contents
+
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Database](#database)
+- [Usage](#usage)
+   - [Registering models](#registering-models)
+   - [Associating pricelists](#associating-pricelists)
+   - [Show pricelists and pricelist items](#show-pricelists-and-pricelist-items)
+   - [Attach and detach pricelist items to pricelist](#attach-and-detach-pricelist-items-to-pricelist)
+   - [Reordering pricelist items within the pricelist](#reordering-pricelist-items-within-the-pricelist)
+- [Api Routes](#api-routes)
+   - [CRUDS](#cruds)
+      - [Pricelists](#pricelists)
+      - [Pricelist items](#pricelist-items)
+   - [Attach and detach pricelists from pricelist items](#attach-and-detach-pricelists-from-pricelist-items)
+   - [Associate pricelist with your model](#associate-pricelist-with-your-model)
+   - [Change pricelist item order within a pricelist](#change-pricelist-item-order-within-a-pricelist)
+- [Testing](#testing)
+- [Changelog](#changelog)
+- [Contributing](#contributing)
+- [Security vulnerabilities](#security-vulnerabilities)
+- [Credits](#credits)
 
 ## Installation
 
@@ -24,17 +47,25 @@ You can install the package via composer:
 composer require nestermaks/laravel-pricelist
 ```
 
-You can publish and run the migrations with:
+Publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --provider="Nestermaks\LaravelPricelist\LaravelPricelistServiceProvider" --tag="laravel-pricelist-migrations"
+php artisan vendor:publish --tag=pricelist-migrations
 php artisan migrate
 ```
 
 ## Configuration
-You can override the default options for used locales, api route prefixes and validation rules. First publish the configuration:
+
+You can override translation files of add a new one. Publish lang files with:
+
 ```bash
-php artisan vendor:publish --provider="Nestermaks\LaravelPricelist\LaravelPricelistServiceProvider" --tag="laravel-pricelist-config"
+php artisan vendor:publish --tag=pricelist-translations
+```
+
+You can override the default options for used locales, api route prefixes and validation rules. Publish the configuration:
+
+```bash
+php artisan vendor:publish --tag=pricelist-config
 ```
 
 This is the contents of the published config file:
@@ -128,33 +159,33 @@ return [
 ## Database
 Migrations files are provided with such tables:
 1. **pricelists**. This table is like a container for pricelist items. It has such fields:
-    1. 'order' - sets priority on a frontend
-    2. 'active' - defines if the pricelist is active or not
+    - `order` - sets priority on a frontend
+    - `active` - defines if the pricelist is active or not
     
     > Translatable fields of the table 'pricelists' are in the table 'pricelist_translations'. Table 'pricelists' has many pricelist translations
     
 2. **pricelist_translations**. Fields:
-    1. 'pricelist_id' - id of the related pricelist
-    2. 'locale' - language of translation
-    3. 'title' - title of the pricelist
-    4. 'description' - description of the pricelist if needed
+    - `pricelist_id` - id of the related pricelist
+    - `locale` - language of translation
+    - `title` - title of the pricelist
+    - `description` - description of the pricelist if needed
     
 ---
 3. **pricelist_items**. Elements of pricelists. Fields:
-    1. 'shortcut' - for internal usage to identify your pricelist item. For example, if you have different items with the same title/
-    2. 'price' - price of your product. In case the 'max_price' field is set, this one stands for minimum price.
-    3. 'max_price' - if your product has no fixed price this field describes maximum price.
-    4. 'price_from' - if the price of your product starts from the value set in 'price' field and has no upper bound. Boolean.
-    5. 'active' - defines if the pricelist item is active or not
-    
+    - `shortcut` - for internal usage to identify your pricelist item. For example, if you have different items with the same title
+    - `price` - price of your product. In case the 'max_price' field is set, this one stands for minimum price.
+    - `max_price` - if your product has no fixed price this field describes maximum price.
+    - `price_from` - if the price of your product starts from the value set in 'price' field and has no upper bound. Boolean.
+    - `active` - defines if the pricelist item is active or not
+   
     > Translatable fields of the table 'pricelist_items' are in the table 'pricelist_items_translations'. Table 'pricelists' has many pricelist translations
    
 
 4. **pricelist_items_translations**. Fields:
-    1. 'pricelist_item_id' - id of the related pricelist item
-    2. 'locale' - language of translation
-    3. 'title' - name of your product
-    4. 'units' - in what units your product can be calculated
+    - `pricelist_item_id` - id of the related pricelist item
+    - `locale` - language of translation
+    - `title` - name of your product
+    - `units` - in what units your product can be calculated
     
 ---
 5. **pricelist_pricelist_item**. Pivot table for pricelists and pricelist_items in many to many relationship. Also contains field 'item_order', which defines order of an element within the table.
@@ -215,7 +246,9 @@ To show pricelists where the pricelist item is present:
 ```php
 PricelistItem::relatedItems();
 ```
+
 ---
+
 ### Attach and detach pricelist items to pricelist
 Assuming we have such variables:
 ```php
@@ -225,16 +258,31 @@ $pricelist_items = PricelistItem::all();
 $pricelist_item = PricelistItem::first();
 ```
 To attach items to the pricelist:
+
 ```php
 $pricelist->attachItems($pricelist_items);
 ```
+
 Or to attach one pricelist item to many pricelists:
 
 ```php
 $pricelist_item->attachItems($pricelists);
 ```
 
-> Notice that the argument in both cases is a Collection.
+To detach items from the pricelist:
+
+```php
+$pricelist->detachItems($pricelist_items);
+```
+
+To detach item from given pricelists:
+
+```php
+$pricelist_item->detachItems($pricelists);
+```
+
+> Notice that the argument in all these cases is a Collection.
+
 
 ### Reordering pricelist items within the pricelist
 
@@ -246,7 +294,9 @@ or
 ```php
 $pricelist_item->getItemOrder($pricelist);
 ```
+
 To set a new order number of a pricelist item within the pricelist use:
+
 ```php
 $pricelist->changeItemOrder($pricelist_item, 3);
 ```
@@ -289,36 +339,89 @@ Parameters to use in CRUDS:
    8. active
       
 For example, to update a pricelist with id "12" item make a patch request:
+
 ```
 https://yoursite.com/nestermaks-api/pricelist-items/12?title=landing page development&units=hour&lang=en&shortcut=land-dev&price=10&max-price=15&price-from=0&active=1
 ```
 
+---
+
 ### Attach and detach pricelists from pricelist items
 
-URL should look like:
+Make a POST request. URL should look like:
 
 ```
-https://yoursite.com/nestermaks-api/pricelists/relation/{$action}
+https://yoursite.com/nestermaks-api/pricelists/relation
 ```
-
-$action can be 'detachItems' of 'AttachItems'
 
 Parameters:
-   1. pricelist_id
-   2. pricelist_items_id
+   1. action (can be 'detachItems' or 'attachItems')
+   2. pricelist_id
+   3. pricelist_items_id
 
-One of them should be integer while another one should be an array.
+One of the parameters of pricelist_id and pricelist_items_id should be an integer while another one should be an array.
 
 Example:
 ```
-https://yoursite.com/nestermaks-api/pricelists/relation/attachItems?pricelist_id=2&pricelist_item_id=[3,4,5,6]
+https://yoursite.com/nestermaks-api/pricelists/relation?action=AttachItems&pricelist_id=2&pricelist_item_id=[3,4,5,6]
 ```
 
 
 
 ### Associate pricelist with your model
 
-URL should look like
+Make a POST request. URL should look like:
+
+```
+https://yoursite.com/nestermaks-api/pricelists/model
+```
+
+Parameters:
+   1. action (can be addPricelist or removePricelist)
+   2. model_name (should be a fully qualified class name of your model)
+   3. model_id
+   4. pricelist_id
+
+Example:
+
+```
+https://yoursite.com/nestermaks-api/pricelists/model?action=addPricelist&model_name=App\Models\User&model_id=2&pricelist_id=4
+```
+
+### Show related pricelists of your model
+
+Make a GET request. URL should look like:
+
+```
+https://yoursite.com/nestermaks-api/pricelists/get/{model_name}/{model_id}
+```
+
+Parameters:
+   1. model_name (should be a fully qualified class name of your model)
+   2. model_id
+
+Example:
+
+https://yoursite.com/nestermaks-api/pricelists/get/App\Models\User/3
+
+### Change pricelist item order within a pricelist
+
+Make a POST request. URL should look like:
+
+```
+https://yoursite.com/nestermaks-api/pricelists/change-order
+```
+
+Parameters:
+   1. pricelist_id
+   2. pricelist_item_id
+   3. item_order (new order number of the pricelist item in a pricelist)
+
+Example:
+
+```
+https://yoursite.com/nestermaks-api/pricelists/change-order?pricelist_id=3&pricelist_item_id=7&item_order=5
+```
 
 ## Testing
 
