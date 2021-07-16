@@ -44,19 +44,25 @@ class PricelistItemController
             }
 
             return \response()
-                ->json([
+                ->json(
+                    [
                     'error' => trans(
                         'pricelist::fail.pricelist-item-created',
-                        ['title' => $item->translateOrDefault(app()->getLocale())->title], app()->getLocale())],
+                        ['title' => $item->translateOrDefault(app()->getLocale())->title],
+                        app()->getLocale()
+                    ), ],
                 );
         }
 
         return \response()
-            ->json([
+            ->json(
+                [
                 'success' => trans(
                     'pricelist::success.pricelist-item-created',
-                    ['title' => $item->translateOrDefault(app()->getLocale())->title], app()->getLocale())],
-                    201
+                    ['title' => $item->translateOrDefault(app()->getLocale())->title],
+                    app()->getLocale()
+                ), ],
+                201
             );
     }
 
@@ -81,16 +87,18 @@ class PricelistItemController
             $item_title = $item->translateOrDefault(app()->getLocale())->title;
         } else {
             return \response()
-                ->json([
+                ->json(
+                    [
                     'error' => trans(
                         'pricelist::fail.no-pricelist-item',
-                        ['id' => $id], app()->getLocale())],
-                        404
+                        ['id' => $id],
+                        app()->getLocale()
+                    ), ],
+                    404
                 );
         }
 
         try {
-
             if ($request->title) {
                 $item->translateOrNew($request->lang)->title = $request->title;
             }
@@ -126,19 +134,25 @@ class PricelistItemController
             }
 
             return \response()
-                ->json([
+                ->json(
+                    [
                     'error' => trans(
                         'pricelist::fail.pricelist-item-updated',
-                        ['title' => $item_title], app()->getLocale())],
+                        ['title' => $item_title],
+                        app()->getLocale()
+                    ), ],
                 );
         }
 
         return \response()
-            ->json([
+            ->json(
+                [
                 'success' => trans(
                     'pricelist::success.pricelist-item-updated',
-                    ['title' => $item->translateOrDefault(app()->getLocale())->title], app()->getLocale())],
-                    200
+                    ['title' => $item->translateOrDefault(app()->getLocale())->title],
+                    app()->getLocale()
+                ), ],
+                200
             );
     }
 
@@ -150,11 +164,14 @@ class PricelistItemController
             $item_title = $item->translateOrDefault(app()->getLocale())->title;
         } else {
             return \response()
-                ->json([
+                ->json(
+                    [
                     'error' => trans(
                         'pricelist::fail.no-pricelist-item',
-                        ['id' => $id], app()->getLocale())],
-                        404
+                        ['id' => $id],
+                        app()->getLocale()
+                    ), ],
+                    404
                 );
         }
 
@@ -166,19 +183,25 @@ class PricelistItemController
             }
 
             return \response()
-                ->json([
+                ->json(
+                    [
                     'error' => trans(
                         'pricelist::fail.pricelist-deleted',
-                        ['title' => $item_title], app()->getLocale())],
+                        ['title' => $item_title],
+                        app()->getLocale()
+                    ), ],
                 );
         }
 
         return \response()
-            ->json([
+            ->json(
+                [
                 'success' => trans(
                     'pricelist::success.pricelist-deleted',
-                    ['title' => $item_title], app()->getLocale())],
-                    200
+                    ['title' => $item_title],
+                    app()->getLocale()
+                ), ],
+                200
             );
     }
 }

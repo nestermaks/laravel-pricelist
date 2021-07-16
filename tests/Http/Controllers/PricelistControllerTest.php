@@ -94,7 +94,6 @@ class PricelistControllerTest extends TestCase
         );
 
         $response->assertStatus(422);
-
     }
 
     /** @test */

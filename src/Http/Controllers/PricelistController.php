@@ -4,7 +4,6 @@
 namespace Nestermaks\LaravelPricelist\Http\Controllers;
 
 use Illuminate\Http\JsonResponse as JsonResponse;
-use Illuminate\Http\Request;
 use Nestermaks\LaravelPricelist\Http\Requests\StorePricelistRequest;
 use Nestermaks\LaravelPricelist\Http\Requests\UpdatePricelistRequest;
 use Nestermaks\LaravelPricelist\Http\Resources\PricelistCollection;
@@ -36,26 +35,31 @@ class PricelistController
             $pricelist->active = $request->active;
 
             $pricelist->save();
-
         } catch (\Exception $e) {
             if (config('app.debug')) {
                 return response()->json($e);
             }
 
             return \response()
-                ->json([
+                ->json(
+                    [
                     'error' => trans(
                         'pricelist::fail.pricelist-created',
-                        ['title' => $pricelist->translateOrDefault(app()->getLocale())->title], app()->getLocale())],
+                        ['title' => $pricelist->translateOrDefault(app()->getLocale())->title],
+                        app()->getLocale()
+                    ), ],
                 );
         }
 
         return \response()
-            ->json([
+            ->json(
+                [
                 'success' => trans(
                     'pricelist::success.pricelist-created',
-                    ['title' => $pricelist->translateOrDefault(app()->getLocale())->title], app()->getLocale())],
-                    201
+                    ['title' => $pricelist->translateOrDefault(app()->getLocale())->title],
+                    app()->getLocale()
+                ), ],
+                201
             );
     }
 
@@ -80,16 +84,18 @@ class PricelistController
             $pricelist_title = $pricelist->translateOrDefault(app()->getLocale())->title;
         } else {
             return \response()
-                ->json([
+                ->json(
+                    [
                     'error' => trans(
                         'pricelist::fail.no-pricelist',
-                        ['id' => $id], app()->getLocale())],
-                        404
+                        ['id' => $id],
+                        app()->getLocale()
+                    ), ],
+                    404
                 );
         }
 
         try {
-
             if ($request->title) {
                 $pricelist->translateOrNew($request->lang)->title = $request->title;
             }
@@ -107,26 +113,31 @@ class PricelistController
             }
 
             $pricelist->save();
-
         } catch (\Exception $e) {
             if (config('app.debug')) {
                 return response()->json($e);
             }
 
             return \response()
-                ->json([
+                ->json(
+                    [
                     'error' => trans(
                         'pricelist::fail.pricelist-updated',
-                        ['title' => $pricelist_title], app()->getLocale())],
+                        ['title' => $pricelist_title],
+                        app()->getLocale()
+                    ), ],
                 );
         }
 
         return \response()
-            ->json([
+            ->json(
+                [
                 'success' => trans(
                     'pricelist::success.pricelist-updated',
-                    ['title' => $pricelist->translateOrDefault(app()->getLocale())->title], app()->getLocale())],
-                    200
+                    ['title' => $pricelist->translateOrDefault(app()->getLocale())->title],
+                    app()->getLocale()
+                ), ],
+                200
             );
     }
 
@@ -138,11 +149,14 @@ class PricelistController
             $pricelist_title = $pricelist->translateOrDefault(app()->getLocale())->title;
         } else {
             return \response()
-                ->json([
+                ->json(
+                    [
                     'error' => trans(
                         'pricelist::fail.no-pricelist',
-                        ['id' => $id], app()->getLocale())],
-                        404
+                        ['id' => $id],
+                        app()->getLocale()
+                    ), ],
+                    404
                 );
         }
 
@@ -154,19 +168,25 @@ class PricelistController
             }
 
             return \response()
-                ->json([
+                ->json(
+                    [
                     'error' => trans(
                         'pricelist::fail.pricelist-deleted',
-                        ['title' => $pricelist_title], app()->getLocale())],
+                        ['title' => $pricelist_title],
+                        app()->getLocale()
+                    ), ],
                 );
         }
 
         return \response()
-            ->json([
+            ->json(
+                [
                 'success' => trans(
                     'pricelist::success.pricelist-deleted',
-                    ['title' => $pricelist_title], app()->getLocale())],
-                    200
+                    ['title' => $pricelist_title],
+                    app()->getLocale()
+                ), ],
+                200
             );
     }
 }

@@ -79,7 +79,6 @@ class PricelistTest extends TestCase
     /** @test */
     public function it_can_be_attached_to_another_model()
     {
-
         $test_model = TestModel::create([
             'title' => 'Hello',
         ]);
